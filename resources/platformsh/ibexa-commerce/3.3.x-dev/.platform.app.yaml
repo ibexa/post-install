@@ -207,11 +207,11 @@ crons:
     refresh:
         # Checks for changes and refresh cache
         spec: "*/5 * * * *"
-        cmd: "php bin/console ibexa:commerce:cache:refresh"
+        cmd: "php bin/console ibexa:commerce:refresh-cache"
     lostorders:
         # Send lost orders to the ERP
         spec: "*/5 * * * *"
-        cmd: "php bin/console ibexa:commerce:lostorder:process"
+        cmd: "php bin/console ibexa:commerce:process-lost-orders"
     writestat:
         # Calculate statistical data for active sessions
         spec: "*/5 * * * *"
