@@ -147,7 +147,7 @@ hooks:
 
         if [ ! -f public/var/.platform.installed ]; then
             # Configure ElasticSearch mappings
-            ##php bin/console ezplatform:elasticsearch:put-index-template
+            ##php bin/console ibexa:elasticsearch:put-index-template
 
             # To workaround issues with p.sh Varnish we clear container cache & temporary set Symfony Proxy
             export SKIP_HTTPCACHE_PURGE="1"
@@ -177,7 +177,7 @@ hooks:
         # - When Solr / ElasticSearch / search configuration changes
         # - On database import/restore
         # So in development it might be convenient to rebuild indexes, slowing down deploy time
-        ##php bin/console ezplatform:reindex --processes=auto
+        ##php bin/console ibexa:reindex --processes=auto
 
         # When using Varnish/Fastly, HttpCache is not cleared when clearing Symfony Cache folder above, you need to
         # clear cache yourself when for instance templates or config affecting responses change, for instance with:
@@ -203,10 +203,10 @@ crons:
         # Except for PE. There crons can be run every minute.
         # So if you are not on PE please change specs to "*/5 * * * *" to avoid warning on each deploy.
         spec: "* * * * *"
-        cmd: "php bin/console ezplatform:cron:run"
+        cmd: "php bin/console ibexa:cron:run"
     weekly:
         spec: "0 0 * * 0"
-        cmd: "php bin/console ezplatform:check-urls --quiet"
+        cmd: "php bin/console ibexa:check-urls --quiet"
 
 runtime:
     extensions:
