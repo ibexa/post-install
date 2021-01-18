@@ -15,6 +15,7 @@ use Composer\Semver\Semver;
 use Composer\Semver\VersionParser;
 use Exception;
 use Ibexa\Platform\PostInstall\IbexaProductVersion;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -58,43 +59,48 @@ class IbexaSetupCommand extends BaseCommand
                 true
             );
 
-            $this->getIO()->write('Copying common files', true, IOInterface::NORMAL);
+            $output->writeln('Copying common files');
 
-            $progressBar = $this->getIO()->getProgressBar($commonFiles->count());
+            $progressBar = new ProgressBar($output);
+            $progressBar->start($commonFiles->count());
+            $this->printNewLine($output);
             foreach ($commonFiles as $file) {
                 if ($fileSystem->exists($file->getRelativePathname())) {
-                    $this->getIO()->write([printf('File \'%s\' exists and has been overwritten', $file->getRelativePathname())], true, IOInterface::VERBOSE);
-                    $this->printNewLine();
+                    $output->writeln(
+                        sprintf("File '%s' exists and has been overwritten", $file->getRelativePathname()),
+                        OutputInterface::VERBOSITY_VERBOSE
+                    );
                 }
 
                 $fileSystem->copy($file->getPathname(), $file->getRelativePathname(), true);
                 $progressBar->advance();
-                $this->printNewLine();
+                $this->printNewLine($output);
             }
 
             $progressBar->finish();
-            $this->printNewLine();
-            $this->getIO()->write(['Copying product specific files'], true, IOInterface::NORMAL);
+            $output->writeln("\nCopying product specific files");
 
-            $progressBar = $this->getIO()->getProgressBar($productSpecificFiles->count());
+            $progressBar->start($productSpecificFiles->count());
+            $this->printNewLine($output);
             foreach ($productSpecificFiles as $file) {
                 if (
                     !array_key_exists($file->getRelativePathname(), $commonFilePathNames)
                     && $fileSystem->exists($file->getRelativePathname())
                 ) {
-                    $this->getIO()->write([printf('File \'%s\' exists and has been overwritten', $file->getRelativePathname())], true, IOInterface::VERBOSE);
-                    $this->printNewLine();
+                    $output->writeln(
+                        sprintf("File '%s' exists and has been overwritten", $file->getRelativePathname()),
+                        OutputInterface::VERBOSITY_VERBOSE
+                    );
                 }
 
                 $fileSystem->copy($file->getPathname(), $file->getRelativePathname(), true);
                 $progressBar->advance();
-                $this->printNewLine();
+                $this->printNewLine($output);
             }
 
             $progressBar->finish();
-            $this->printNewLine();
 
-            $this->getIO()->write('Platform.sh config files installed successfully', true, IOInterface::NORMAL);
+            $output->writeln("\nPlatform.sh config files installed successfully");
         }
 
         return 1;
@@ -103,12 +109,6 @@ class IbexaSetupCommand extends BaseCommand
     protected function getCommonFiles(string $product): Finder
     {
         $versionDir = $this->getVersionDirectory($product, self::PSH_RESOURCES_PATH . '/common');
-        $this->getIO()->write(
-            [printf('Using version directory for common files: %s', $versionDir)],
-            false,
-            IOInterface::DEBUG
-        );
-        $this->printNewLine();
 
         $finder = new Finder();
         $finder
@@ -124,12 +124,6 @@ class IbexaSetupCommand extends BaseCommand
     {
         $productDir = str_replace('/', '-', $product);
         $versionDir = $this->getVersionDirectory($product, self::PSH_RESOURCES_PATH . '/' . $productDir);
-        $this->getIO()->write(
-            [printf('Using version directory for product specific files: %s', $versionDir)],
-            false,
-            IOInterface::DEBUG
-        );
-        $this->printNewLine();
 
         $finder = new Finder();
         $finder
@@ -141,9 +135,9 @@ class IbexaSetupCommand extends BaseCommand
         return $finder;
     }
 
-    protected function printNewLine(): void
+    protected function printNewLine(OutputInterface $output): void
     {
-        $this->getIO()->write('', true, IOInterface::NORMAL);
+        $output->writeln('');
     }
 
     private function getVersionDirectory(string $product, string $path): string
