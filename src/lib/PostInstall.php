@@ -29,7 +29,7 @@ class PostInstall implements PluginInterface, Capable
 
     public function uninstall(Composer $composer, IOInterface $io): void
     {
-        $io->write('[Ibexa PostInstall tool] Uninstall',  true, IOInterface::DEBUG);
+        $io->write('[Ibexa PostInstall tool] Uninstall', true, IOInterface::DEBUG);
     }
 
     public function getCapabilities()
