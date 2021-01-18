@@ -9,7 +9,11 @@ declare(strict_types=1);
 namespace Ibexa\Platform\PostInstall\Command;
 
 use Composer\Command\BaseCommand;
+use Composer\InstalledVersions;
 use Composer\IO\IOInterface;
+use Composer\Semver\Semver;
+use Composer\Semver\VersionParser;
+use Exception;
 use Ibexa\Platform\PostInstall\IbexaProductVersion;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -20,6 +24,9 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class IbexaSetupCommand extends BaseCommand
 {
+    /** @var \Composer\Semver\VersionParser */
+    private $versionParser;
+
     private const PSH_RESOURCES_PATH = __DIR__ . '/../../../resources/platformsh';
 
     protected function configure(): void
@@ -40,7 +47,7 @@ class IbexaSetupCommand extends BaseCommand
             $product = IbexaProductVersion::getInstalledProduct();
             $version = IbexaProductVersion::getInstalledProductVersion();
 
-            $commonFiles = $this->getCommonFiles($version);
+            $commonFiles = $this->getCommonFiles($product);
             $productSpecificFiles = $this->getProductSpecificFiles($product, $version);
 
             // helper array for detecting common file overrides
@@ -56,7 +63,7 @@ class IbexaSetupCommand extends BaseCommand
             $progressBar = $this->getIO()->getProgressBar($commonFiles->count());
             foreach ($commonFiles as $file) {
                 if ($fileSystem->exists($file->getRelativePathname())) {
-                    $this->getIO()->write(printf('File \'%s\' exists and has been overwritten', $file->getRelativePathname()), true, IOInterface::VERBOSE);
+                    $this->getIO()->write([printf('File \'%s\' exists and has been overwritten', $file->getRelativePathname())], true, IOInterface::VERBOSE);
                     $this->printNewLine();
                 }
 
@@ -65,8 +72,9 @@ class IbexaSetupCommand extends BaseCommand
                 $this->printNewLine();
             }
 
+            $progressBar->finish();
             $this->printNewLine();
-            $this->getIO()->write('Copying product specific files', true, IOInterface::NORMAL);
+            $this->getIO()->write(['Copying product specific files'], true, IOInterface::NORMAL);
 
             $progressBar = $this->getIO()->getProgressBar($productSpecificFiles->count());
             foreach ($productSpecificFiles as $file) {
@@ -74,7 +82,7 @@ class IbexaSetupCommand extends BaseCommand
                     !array_key_exists($file->getRelativePathname(), $commonFilePathNames)
                     && $fileSystem->exists($file->getRelativePathname())
                 ) {
-                    $this->getIO()->write(printf('File \'%s\' exists and has been overwritten', $file->getRelativePathname()), true, IOInterface::VERBOSE);
+                    $this->getIO()->write([printf('File \'%s\' exists and has been overwritten', $file->getRelativePathname())], true, IOInterface::VERBOSE);
                     $this->printNewLine();
                 }
 
@@ -92,11 +100,19 @@ class IbexaSetupCommand extends BaseCommand
         return 1;
     }
 
-    protected function getCommonFiles(string $version): Finder
+    protected function getCommonFiles(string $product): Finder
     {
+        $versionDir = $this->getVersionDirectory($product, self::PSH_RESOURCES_PATH . '/common');
+        $this->getIO()->write(
+            [printf('Using version directory for common files: %s', $versionDir)],
+            false,
+            IOInterface::DEBUG
+        );
+        $this->printNewLine();
+
         $finder = new Finder();
         $finder
-            ->in(self::PSH_RESOURCES_PATH.'/common/'.$version)
+            ->in(self::PSH_RESOURCES_PATH . '/common/' . $versionDir)
             ->ignoreDotFiles(false)
             ->followLinks()
             ->files();
@@ -106,9 +122,18 @@ class IbexaSetupCommand extends BaseCommand
 
     protected function getProductSpecificFiles(string $product, string $version): Finder
     {
+        $productDir = str_replace('/', '-', $product);
+        $versionDir = $this->getVersionDirectory($product, self::PSH_RESOURCES_PATH . '/' . $productDir);
+        $this->getIO()->write(
+            [printf('Using version directory for product specific files: %s', $versionDir)],
+            false,
+            IOInterface::DEBUG
+        );
+        $this->printNewLine();
+
         $finder = new Finder();
         $finder
-            ->in(self::PSH_RESOURCES_PATH.'/'.str_replace('/', '-', $product).'/'.$version.'/')
+            ->in(self::PSH_RESOURCES_PATH . '/' . $productDir . '/' . $versionDir . '/')
             ->ignoreDotFiles(false)
             ->followLinks()
             ->files();
@@ -119,5 +144,64 @@ class IbexaSetupCommand extends BaseCommand
     protected function printNewLine(): void
     {
         $this->getIO()->write('', true, IOInterface::NORMAL);
+    }
+
+    private function getVersionDirectory(string $product, string $path): string
+    {
+        $finder = new Finder();
+        $finder
+            ->in($path)
+            ->ignoreDotFiles(false)
+            ->directories()
+            ->depth(0);
+
+        $versionDirs = array_values(
+            array_map(
+                static function (SplFileInfo $dir): string {
+                    return $dir->getRelativePathname();
+                },
+                iterator_to_array($finder)
+            )
+        );
+
+        $productPackage = InstalledVersions::getRawData()['versions'][$product];
+        $aliases = $productPackage['aliases'];
+        $productVersion = $productPackage['version'];
+
+        $normalizedAliases = array_map(function (string $alias): string {
+            $normalizedAlias = $this->getVersionParser()->parseNumericAliasPrefix($alias);
+
+            return trim($normalizedAlias, '.');
+        }, $aliases);
+
+        foreach (Semver::rsort($versionDirs) as $versionDir) {
+            // directory name:
+            //      matches version (i.e. dev-master)
+            //      OR is one of the normalized aliases (3.3.x-dev => 3.3)
+            //      OR is one of the aliases (3.3.x-dev)
+            //      OR matches semver constraint (3.3, 3.3.1)
+            if (
+                $versionDir === $productVersion
+                || in_array($versionDir, $normalizedAliases, true)
+                || in_array($versionDir, $aliases, true)
+                || (
+                    false === strpos($versionDir, 'dev-')
+                    && Semver::satisfies($productVersion, '~' . $versionDir)
+                )
+            ) {
+                return $versionDir;
+            }
+        }
+
+        throw new Exception('Can\'t find directory matching your product version');
+    }
+
+    private function getVersionParser(): VersionParser
+    {
+        if (null === $this->versionParser) {
+            $this->versionParser = new VersionParser();
+        }
+
+        return $this->versionParser;
     }
 }

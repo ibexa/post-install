@@ -1,2 +1,7 @@
 parameters:
-    # No errors so far
+	ignoreErrors:
+		-
+			message: "#^Call to an undefined method Composer\\\\IO\\\\IOInterface\\:\\:getProgressBar\\(\\)\\.$#"
+			count: 2
+			path: src/lib/Command/IbexaSetupCommand.php
+
