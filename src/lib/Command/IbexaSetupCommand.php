@@ -152,7 +152,8 @@ class IbexaSetupCommand extends BaseCommand
                 "bin/tika-app-1.20.jar",
                 fopen("https://archive.apache.org/dist/tika/tika-app-1.20.jar", 'r')
             );
-            if (!$fileSystem->exists('Download failed')) {
+            if (!$fileSystem->exists('bin/tika-app-1.20.jar')) {
+                $this->getIO()->write('Download failed', true, IOInterface::NORMAL);
                 return;
             }
         }
@@ -163,6 +164,10 @@ class IbexaSetupCommand extends BaseCommand
                 "solr-7.7.3.tgz",
                 fopen("https://archive.apache.org/dist/lucene/solr/7.7.3/solr-7.7.3.tgz", 'r')
             );
+            if (!$fileSystem->exists('solr-7.7.3.tgz')) {
+                $this->getIO()->write('Download failed', true, IOInterface::NORMAL);
+                return;
+            }
         }
 
         if (!$fileSystem->exists('solr') && $fileSystem->exists('solr-7.7.3.tgz')) {
