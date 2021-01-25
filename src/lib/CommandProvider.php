@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace Ibexa\Platform\PostInstall;
 
 use Ibexa\Platform\PostInstall\Command\IbexaSetupCommand;
+use Ibexa\Platform\PostInstall\Command\IbexaSolrCommand;
 
 class CommandProvider implements \Composer\Plugin\Capability\CommandProvider
 {
@@ -16,6 +17,7 @@ class CommandProvider implements \Composer\Plugin\Capability\CommandProvider
     {
         return [
             new IbexaSetupCommand(),
+            new IbexaSolrCommand(),
         ];
     }
 }
