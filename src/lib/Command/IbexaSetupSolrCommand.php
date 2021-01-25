@@ -24,7 +24,7 @@ use Symfony\Component\Process\ProcessBuilder;
 /**
  * @internal
  */
-class IbexaSolrCommand extends BaseCommand
+final class IbexaSetupSolrCommand extends BaseCommand
 {
     private const PSH_RESOURCES_PATH = __DIR__ . '/../../../resources/platformsh';
 
