@@ -33,6 +33,8 @@ class IbexaSetupCommand extends BaseCommand
 
     private const PSH_RESOURCES_PATH = __DIR__ . '/../../../resources/platformsh';
 
+    private const SOLR_RESOURCES_PATH = __DIR__ . '/../../../resources/solr';
+
     private const DEFAULT_SOLR_PORT = 9000;
 
     protected function configure(): void
@@ -139,9 +141,9 @@ class IbexaSetupCommand extends BaseCommand
         $product = IbexaProductVersion::getInstalledProduct();
         $version = IbexaProductVersion::getInstalledProductVersion();
 
-        $solrConfigFiles = $this->getSolrVersionSpecificFiles($product, $version);
+        $solrCommonConfigFiles = $this->getSolrCommonFiles($product, $version);
 
-        if ($solrConfigFiles->count() === 0) {
+        if ($solrCommonConfigFiles->count() === 0) {
             throw new InvalidArgumentException(
                 sprintf('No SOLR configuration provided for %s (%s)', $product, $version
             ));
@@ -176,7 +178,8 @@ class IbexaSetupCommand extends BaseCommand
             $fileSystem->rename('solr-7.7.3', 'solr');
         }
 
-        foreach ($solrConfigFiles as $file) {
+        $this->getIO()->write('Copying common configuration files...', true, IOInterface::NORMAL);
+        foreach ($solrCommonConfigFiles as $file) {
             $fileSystem->copy(
                 $file->getPathname(),
                 'solr/server/ez/template/' . $file->getRelativePathname(),
@@ -187,6 +190,17 @@ class IbexaSetupCommand extends BaseCommand
             'solr/server/solr/solr.xml',
             'solr/server/ez/solr.xml'
         );
+
+        $specificSolrConfiguration = $this->getSolrVersionSpecificFiles($product, $version);
+
+        $this->getIO()->write('Copying version specific configuration files...', true, IOInterface::NORMAL);
+        foreach ($specificSolrConfiguration as $file) {
+            $fileSystem->copy(
+                $file->getPathname(),
+                'solr/server/ez/template/' . $file->getRelativePathname(),
+                true
+            );
+        }
 
         $process = (new ProcessBuilder(
             ['solr/bin/solr', '-s', 'ez', '-p', $port]))
@@ -281,6 +295,24 @@ class IbexaSetupCommand extends BaseCommand
     }
 
     protected function getSolrVersionSpecificFiles(string $product, string $version): Finder
+    {
+        $productDir = str_replace('/', '-', $product);
+        $versionDir = $this->getVersionDirectory(
+            $product,
+            self::SOLR_RESOURCES_PATH . '/' . $productDir
+        );
+
+        $finder = new Finder();
+        $finder
+            ->in(self::SOLR_RESOURCES_PATH . '/' . $productDir . '/' . $versionDir . '/' . 'override')
+            ->ignoreDotFiles(false)
+            ->followLinks()
+            ->files();
+
+        return $finder;
+    }
+
+    protected function getSolrCommonFiles(string $product, string $version): Finder
     {
         $productDir = str_replace('/', '-', $product);
         $versionDir = $this->getVersionDirectory(
