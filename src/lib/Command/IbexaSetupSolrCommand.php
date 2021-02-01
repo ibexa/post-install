@@ -32,6 +32,10 @@ final class IbexaSetupSolrCommand extends BaseCommand
 
     private const DEFAULT_SOLR_PORT = 9000;
 
+    private const TIKA_APP_URL = 'https://archive.apache.org/dist/tika/tika-app-1.20.jar';
+
+    private const SOLR_URL = 'https://archive.apache.org/dist/lucene/solr/7.7.3/solr-7.7.3.tgz';
+
     protected function configure(): void
     {
         $this->setName('ibexa:setup:solr')
@@ -62,7 +66,7 @@ final class IbexaSetupSolrCommand extends BaseCommand
         if (!$fileSystem->exists('bin/tika-app-1.20.jar')) {
             $this->getIO()->write('Downloading Tika App 1.20 ...', true, IOInterface::NORMAL);
             $httpDownloader->copy(
-                'https://archive.apache.org/dist/tika/tika-app-1.20.jar',
+                self::TIKA_APP_URL,
                 'bin/tika-app-1.20.jar'
             );
         }
@@ -70,7 +74,7 @@ final class IbexaSetupSolrCommand extends BaseCommand
         if (!$fileSystem->exists('solr-7.7.3.tgz')) {
             $this->getIO()->write('Downloading SOLR 7.7.3...', true, IOInterface::NORMAL);
             $httpDownloader->copy(
-                'https://archive.apache.org/dist/lucene/solr/7.7.3/solr-7.7.3.tgz',
+                self::SOLR_URL,
                 'solr-7.7.3.tgz'
             );
         }
