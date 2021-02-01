@@ -36,67 +36,68 @@ class IbexaSetupCommand extends BaseCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->getIO()->write('Installing Platform.sh config files...', true, IOInterface::NORMAL);
+        if ($input->getOption('platformsh')) {
+            $this->getIO()->write('Installing Platform.sh config files...', true, IOInterface::NORMAL);
 
-        $fileSystem = new Filesystem();
+            $fileSystem = new Filesystem();
 
-        $product = IbexaProductVersion::getInstalledProduct();
-        $version = IbexaProductVersion::getInstalledProductVersion();
+            $product = IbexaProductVersion::getInstalledProduct();
+            $version = IbexaProductVersion::getInstalledProductVersion();
 
-        $commonFiles = $this->getCommonFiles($product);
+            $commonFiles = $this->getCommonFiles($product);
+            $productSpecificFiles = $this->getProductSpecificFiles($product, $version);
 
-        $productSpecificFiles = $this->getProductSpecificFiles($product, $version);
+            // helper array for detecting common file overrides
+            $commonFilePathNames = array_fill_keys(
+                array_map(static function (SplFileInfo $file): string {
+                    return $file->getRelativePathname();
+                }, iterator_to_array($commonFiles)),
+                true
+            );
 
-        // helper array for detecting common file overrides
-        $commonFilePathNames = array_fill_keys(
-            array_map(static function (SplFileInfo $file): string {
-                return $file->getRelativePathname();
-            }, iterator_to_array($commonFiles)),
-            true
-        );
+            $output->writeln('Copying common files');
 
-        $output->writeln('Copying common files');
+            $progressBar = new ProgressBar($output);
+            $progressBar->start($commonFiles->count());
+            $this->printNewLine($output);
+            foreach ($commonFiles as $file) {
+                if ($fileSystem->exists($file->getRelativePathname())) {
+                    $output->writeln(
+                        sprintf("File '%s' exists and has been overwritten", $file->getRelativePathname()),
+                        OutputInterface::VERBOSITY_VERBOSE
+                    );
+                }
 
-        $progressBar = new ProgressBar($output);
-        $progressBar->start($commonFiles->count());
-        $this->printNewLine($output);
-        foreach ($commonFiles as $file) {
-            if ($fileSystem->exists($file->getRelativePathname())) {
-                $output->writeln(
-                    sprintf("File '%s' exists and has been overwritten", $file->getRelativePathname()),
-                    OutputInterface::VERBOSITY_VERBOSE
-                );
+                $fileSystem->copy($file->getPathname(), $file->getRelativePathname(), true);
+                $progressBar->advance();
+                $this->printNewLine($output);
             }
 
-            $fileSystem->copy($file->getPathname(), $file->getRelativePathname(), true);
-            $progressBar->advance();
+            $progressBar->finish();
+            $output->writeln("\nCopying product specific files");
+
+            $progressBar->start($productSpecificFiles->count());
             $this->printNewLine($output);
-        }
+            foreach ($productSpecificFiles as $file) {
+                if (
+                    !array_key_exists($file->getRelativePathname(), $commonFilePathNames)
+                    && $fileSystem->exists($file->getRelativePathname())
+                ) {
+                    $output->writeln(
+                        sprintf("File '%s' exists and has been overwritten", $file->getRelativePathname()),
+                        OutputInterface::VERBOSITY_VERBOSE
+                    );
+                }
 
-        $progressBar->finish();
-        $output->writeln("\nCopying product specific files");
-
-        $progressBar->start($productSpecificFiles->count());
-        $this->printNewLine($output);
-        foreach ($productSpecificFiles as $file) {
-            if (
-                !array_key_exists($file->getRelativePathname(), $commonFilePathNames)
-                && $fileSystem->exists($file->getRelativePathname())
-            ) {
-                $output->writeln(
-                    sprintf("File '%s' exists and has been overwritten", $file->getRelativePathname()),
-                    OutputInterface::VERBOSITY_VERBOSE
-                );
+                $fileSystem->copy($file->getPathname(), $file->getRelativePathname(), true);
+                $progressBar->advance();
+                $this->printNewLine($output);
             }
 
-            $fileSystem->copy($file->getPathname(), $file->getRelativePathname(), true);
-            $progressBar->advance();
-            $this->printNewLine($output);
+            $progressBar->finish();
+
+            $output->writeln("\nPlatform.sh config files installed successfully");
         }
-
-        $progressBar->finish();
-
-        $output->writeln("\nPlatform.sh config files installed successfully");
 
         return 1;
     }
