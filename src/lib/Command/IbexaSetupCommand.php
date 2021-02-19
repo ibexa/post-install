@@ -15,6 +15,7 @@ use Composer\Semver\Semver;
 use Composer\Semver\VersionParser;
 use Exception;
 use Ibexa\Platform\PostInstall\IbexaProductVersion;
+use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -164,6 +165,10 @@ class IbexaSetupCommand extends BaseCommand
 
         $normalizedAliases = array_map(function (string $alias): string {
             $normalizedAlias = $this->getVersionParser()->parseNumericAliasPrefix($alias);
+
+            if ($normalizedAlias === false) {
+                throw new RuntimeException(sprintf('Unable to parse version. "%s" is invalid.', $alias));
+            }
 
             return trim($normalizedAlias, '.');
         }, $aliases);
