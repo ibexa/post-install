@@ -5,10 +5,14 @@ on:
     branches: [ master ]
   pull_request:
 
+env:
+  COMPOSER_PROCESS_TIMEOUT: 600
+
 jobs:
   tests:
     name: Tests
     runs-on: "ubuntu-20.04"
+    timeout-minutes: 10
 
     strategy:
       matrix:
@@ -36,7 +40,7 @@ jobs:
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
       - name: Run PHPStan analysis
-        run: composer run-script --timeout=600 phpstan
+        run: composer run-script phpstan
 
       - name: Run code style check
-        run: composer run-script --timeout=600 php-cs -- --format=checkstyle | cs2pr
+        run: composer run-script php-cs -- --format=checkstyle | cs2pr
