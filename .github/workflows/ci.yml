@@ -5,9 +5,6 @@ on:
     branches: [ master ]
   pull_request:
 
-env:
-  COMPOSER_PROCESS_TIMEOUT: 600
-
 jobs:
   tests:
     name: Tests
