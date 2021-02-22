@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace Ibexa\Platform\PostInstall;
 
 use Composer\InstalledVersions;
+use RuntimeException;
 
 class IbexaProductVersion
 {
@@ -44,7 +45,7 @@ class IbexaProductVersion
         $installedProduct = reset($installedIbexaProducts);
 
         if (!is_string($installedProduct)) {
-            throw new \RuntimeException(sprintf(
+            throw new RuntimeException(sprintf(
                 'Unable to establish installed version of Ibexa product. Packages ["%s"] does not contain any of ["%s"]. Check your installed packages.',
                 implode('","', $packages),
                 implode('","', self::IBEXA_PRODUCTS),
