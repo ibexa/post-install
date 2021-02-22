@@ -2,7 +2,7 @@
 | ---------------------------------------- | ------------------
 | **JIRA issue**                          | [EZP-XXXXX](https://issues.ibexa.co/browse/EZP-XXXXX)
 | **Type**                                   | feature/bug/improvement
-| **Target eZ Platform version** | `v3.x` - please update `x` accordingly
+| **Target Ibexa DXP version** | `v3.x` - please update `x` accordingly
 | **BC breaks**                          | yes/no
 | **Doc needed**                       | yes/no
 
