@@ -103,9 +103,6 @@ mounts:
     'public/var':
         source: local
         source_path: var
-    'src/Migrations/Ibexa':
-        source: local
-        source_path: migrations
     'config/graphql/types/ezplatform':
         source: local
         source_path: graphql_types
