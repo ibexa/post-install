@@ -15,7 +15,7 @@ dependencies:
         composer/composer: '^2.0'
 
 # The type of the application to build.
-type: php:7.3
+type: php:7.4
 
 build:
     # "none" means we're running composer manually, see build hook
