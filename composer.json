@@ -41,7 +41,7 @@
         "fix-cs-changed": "php-cs-fixer fix -v --config=.php_cs --show-progress=estimating $(git diff ${GIT_DIFF_BASE:-origin/main} --diff-filter=ACMR --name-only \"*.php\"|paste -sd ' ')",
         "test": "phpunit -c phpunit.xml",
         "phpstan": "phpstan analyse -c phpstan.neon",
-        "php-cs-changed": "php-cs-fixer fix -v --diff --config=.php_cs --dry-run --show-progress=estimating $(git diff ${GIT_DIFF_BASE:-origin/main} --diff-filter=ACMR --name-only \"*.php\"|paste -sd ' ')",
+        "check-cs-changed": "php-cs-fixer fix -v --diff --config=.php_cs --dry-run --show-progress=estimating $(git diff ${GIT_DIFF_BASE:-origin/main} --diff-filter=ACMR --name-only \"*.php\"|paste -sd ' ')",
         "check-cs": "php-cs-fixer fix -v --diff --config=.php_cs --dry-run --show-progress=estimating"
     },
     "scripts-descriptions": {
@@ -49,7 +49,7 @@
         "fix-cs-changed": "Automatically fixes code style in changed files only, compared to branch in GIT_DIFF_BASE env variable, defaults to origin/main",
         "test": "Run automatic tests",
         "phpstan": "Run static code analysis",
-        "php-cs-changed": "Run code style checker against changed files only, compared to branch in GIT_DIFF_BASE env variable, defaults to origin/main",
+        "check-cs-changed": "Run code style checker against changed files only, compared to branch in GIT_DIFF_BASE env variable, defaults to origin/main",
         "check-cs": "Run code style checker for all files"
     },
     "config": {
