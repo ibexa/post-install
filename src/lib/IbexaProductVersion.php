@@ -59,6 +59,6 @@ class IbexaProductVersion
     {
         $installedProduct = self::getInstalledProduct();
 
-        return InstalledVersions::getVersion($installedProduct);
+        return InstalledVersions::getVersion($installedProduct) ?? '';
     }
 }
