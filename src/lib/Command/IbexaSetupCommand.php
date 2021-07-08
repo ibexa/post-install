@@ -160,8 +160,8 @@ class IbexaSetupCommand extends BaseCommand
         );
 
         $productPackage = InstalledVersions::getRawData()['versions'][$product];
-        $aliases = $productPackage['aliases'];
-        $productVersion = $productPackage['version'];
+        $aliases = $productPackage['aliases'] ?? [];
+        $productVersion = $productPackage['version'] ?? '';
 
         $normalizedAliases = array_map(function (string $alias): string {
             $normalizedAlias = $this->getVersionParser()->parseNumericAliasPrefix($alias);
