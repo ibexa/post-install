@@ -1,4 +1,4 @@
-# Default settings in order to set up eZ Platform demo install on Platform.sh dev instances
+# Default settings in order to set up Ibexa DXP install on Ibexa Cloud dev instances
 #
 # Note: Like on own servers, make sure to tune Redis/Solr/Varnish/MySQL memory/disk size for your installation to avoid issues.
 #     Reach out to platform.sh support to get help on this and insight into your disk/memory usage.
