@@ -22,7 +22,7 @@ mysqldb:
             #    privileges:
             #        dfs: admin
 
-# For use by Symfony Cache (used by eZ Platform SPI Persistence Cache)
+# For use by Symfony Cache (used by Ibexa DXP SPI Persistence Cache)
 rediscache:
     type: 'redis:5.0'
     # For cache you might need to increase the size of your plan if your installation has a sizeable amount of content.
