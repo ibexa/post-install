@@ -1,4 +1,4 @@
-# Default settings in order to set up eZ Platform demo install on Platform.sh dev instances
+# Default settings in order to set up Ibexa DXP installation on Ibexa Cloud dev instances
 #
 # Note: Like on own servers, make sure to tune Redis/Solr/Varnish/MySQL memory/disk size for your installation to avoid issues.
 #     Reach out to platform.sh support to get help on this and insight into your disk/memory usage.
@@ -22,7 +22,7 @@ mysqldb:
             #    privileges:
             #        dfs: admin
 
-# For use by Symfony Cache (used by eZ Platform SPI Persistence Cache)
+# For use by Symfony Cache (used by Ibexa DXP SPI Persistence Cache)
 rediscache:
     type: 'redis:5.0'
     # For cache you might need to increase the size of your plan if your installation has a sizeable amount of content.
