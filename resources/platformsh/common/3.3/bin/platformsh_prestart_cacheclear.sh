@@ -5,8 +5,8 @@
 set -e
 
 #date
-echo "removing var/cache/${APP_ENV-dev}/*.* to avoid Symfony container issues on interface changes"
-rm -Rf var/cache/${APP_ENV-dev}/*.*
+echo "removing var/cache/${APP_ENV-dev} to cache issues"
+rm -Rf var/cache/${APP_ENV-dev}
 #date
 echo "clearing application cache"
 php bin/console cache:clear
