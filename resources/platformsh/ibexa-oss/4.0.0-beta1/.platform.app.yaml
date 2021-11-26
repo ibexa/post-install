@@ -147,7 +147,7 @@ hooks:
         export NVM_DIR="$HOME/.nvm"
         [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
         nvm current
-        nvm install 10.15.3
+        nvm install 14
 
         if [ -z "$COMPOSER_AUTH" ]; then
             echo "TIP: If you need to authenticate against Github/Gitlab/updates.ez.no, use COMPOSER_AUTH env variable"
@@ -162,7 +162,7 @@ hooks:
         set -e
 
         unset NPM_CONFIG_PREFIX
-        command -v nvm && nvm use 10.15.3
+        command -v nvm && nvm use 14
 
         if [ ! -f public/var/.platform.installed ]; then
             # To workaround issues with p.sh Varnish we clear container cache & temporary set Symfony Proxy
@@ -197,10 +197,10 @@ hooks:
 
         # When using Varnish/Fastly, HttpCache is not cleared when clearing Symfony Cache folder above, you need to
         # clear cache yourself when for instance templates or config affecting responses change, for instance with:
-        ##php bin/console fos:httpcache:invalidate:tag ez-all
+        ##bin/console fos:httpcache:invalidate:tag ez-all
         # Depending on your VCL, buy default this would trigger a soft purge (expiry) and allow grace period, however
         # even so if your change only affected certain subset of content, ideally you should only clear specific tags:
-        ##php bin/console fos:httpcache:invalidate:tag l44 c33 ct2 ...
+        ##bin/console fos:httpcache:invalidate:tag l44 c33 ct2 ...
 
     # Post deploy hook, like deploy but after being deployed and live, for deploy tasks we can do asynchronously
     # Tip: As this is running while web is running, and it's async, avoid doing anything like cache clearing that affects web requests here.
