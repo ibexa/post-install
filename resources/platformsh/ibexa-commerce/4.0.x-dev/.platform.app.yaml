@@ -257,7 +257,7 @@ runtime:
         - redis
         - igbinary
         - sodium
-        - blackfire
+        - newrelic
         #- apcu
         #- name: 'blackfire'
         #  configuration:
