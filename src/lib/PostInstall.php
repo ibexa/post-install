@@ -6,14 +6,14 @@
  */
 declare(strict_types=1);
 
-namespace Ibexa\Platform\PostInstall;
+namespace Ibexa\PostInstall;
 
 use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Plugin\Capable;
 use Composer\Plugin\PluginInterface;
 use Composer\Plugin\Capability\CommandProvider;
-use Ibexa\Platform\PostInstall\CommandProvider as SetupToolCommandProvider;
+use Ibexa\PostInstall\CommandProvider as SetupToolCommandProvider;
 
 class PostInstall implements PluginInterface, Capable
 {
