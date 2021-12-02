@@ -37,15 +37,15 @@
         }
     },
     "scripts": {
-        "fix-cs": "php-cs-fixer fix --config=.php-cs-fixer.php --show-progress=dots",
-        "fix-cs-changed": "php-cs-fixer fix -v --config=.php_cs --show-progress=estimating $(git diff ${GIT_DIFF_BASE:-origin/main} --diff-filter=ACMR --name-only \"*.php\"|paste -sd ' ')",
+        "fix-cs": "php-cs-fixer fix --config=.php-cs-fixer.php -v --show-progress=dots",
+        "fix-cs-changed": "php-cs-fixer fix --config=.php_cs -v --show-progress=dots $(git diff ${GIT_DIFF_BASE:-origin/main} --diff-filter=ACMR --name-only \"*.php\"|paste -sd ' ')",
         "test": "phpunit -c phpunit.xml",
         "phpstan": "phpstan analyse -c phpstan.neon",
-        "check-cs-changed": "php-cs-fixer fix -v --diff --config=.php_cs --dry-run --show-progress=estimating $(git diff ${GIT_DIFF_BASE:-origin/main} --diff-filter=ACMR --name-only \"*.php\"|paste -sd ' ')",
-        "check-cs": "php-cs-fixer fix -v --diff --config=.php_cs --dry-run --show-progress=estimating"
+        "check-cs-changed": "php-cs-fixer fix --diff --config=.php_cs --dry-run -v --show-progress=dots $(git diff ${GIT_DIFF_BASE:-origin/main} --diff-filter=ACMR --name-only \"*.php\"|paste -sd ' ')",
+        "check-cs": "php-cs-fixer fix --diff --config=.php_cs --dry-run -v --show-progress=dots"
     },
     "scripts-descriptions": {
-        "fix-cs": "php-cs-fixer fix --config=.php-cs-fixer.php --show-progress=dots",
+        "fix-cs": "Fix Coding standard issues in current checkout.",
         "fix-cs-changed": "Automatically fixes code style in changed files only, compared to branch in GIT_DIFF_BASE env variable, defaults to origin/main",
         "test": "Run automatic tests",
         "phpstan": "Run static code analysis",
