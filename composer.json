@@ -28,11 +28,13 @@
     },
     "autoload": {
         "psr-4": {
+            "Ibexa\\PostInstall\\": "src/lib/",
             "Ibexa\\Platform\\PostInstall\\": "src/lib/"
         }
     },
     "autoload-dev": {
         "psr-4": {
+            "Ibexa\\Tests\\PostInstall\\": "tests/lib/",
             "Ibexa\\Platform\\Tests\\PostInstall\\": "tests/lib/"
         }
     },
@@ -59,6 +61,6 @@
         "branch-alias": {
             "dev-main": "4.0.x-dev"
         },
-        "class": "Ibexa\\Platform\\PostInstall\\PostInstall"
+        "class": "Ibexa\\PostInstall\\PostInstall"
     }
 }
