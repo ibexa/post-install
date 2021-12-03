@@ -6,9 +6,9 @@
  */
 declare(strict_types=1);
 
-namespace Ibexa\Platform\PostInstall;
+namespace Ibexa\PostInstall;
 
-use Ibexa\Platform\PostInstall\Command\IbexaSetupCommand;
+use Ibexa\PostInstall\Command\IbexaSetupCommand;
 
 class CommandProvider implements \Composer\Plugin\Capability\CommandProvider
 {
