@@ -10,14 +10,14 @@
         }
     ],
     "require": {
-        "php": "^7.3",
+        "php": "^7.3 || ^8.0",
         "composer-plugin-api": "^2.0",
         "composer/semver": "^3.2"
     },
     "require-dev": {
         "composer/composer": "^2.0.8",
         "phpstan/extension-installer": "^1.0",
-        "phpstan/phpstan": "0.12.57",
+        "phpstan/phpstan": "0.12.92",
         "phpstan/phpstan-phpunit": "^0.12.16",
         "phpstan/phpstan-webmozart-assert": "^0.12.7",
         "symfony/dotenv": "^5.2",
