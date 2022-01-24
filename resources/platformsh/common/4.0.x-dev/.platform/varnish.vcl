@@ -259,7 +259,7 @@ sub ez_invalidate_token {
         set req.http.x-fos-token-url = req.url;
         set req.http.x-fos-token-method = req.method;
 
-        set req.url = "/_ez_http_invalidatetoken";
+        set req.url = "/_ibexa_http_invalidatetoken";
 
         // Force the lookup
         return (hash);
