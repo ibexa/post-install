@@ -49,6 +49,8 @@ variables:
         opcache.max_accelerated_files: 20000
         # We recommend enabling the following opcache.validate_timestamps setting in production, but then opcache_reset() must be called every time you clear symfony cache.
         #opcache.validate_timestamps: 0
+        
+        max_execution_time: 600
 
         # Applications that open many PHP files, such as Symfony projects, should use at least these values
         realpath_cache_size: 4096K
