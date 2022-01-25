@@ -73,7 +73,7 @@ rediscache:
 
 # If you wish to use elasticsearch, uncomment this service and the corresponding relationship in .platform.app.yaml.
 #elasticsearch:
-#    type: elasticsearch:7.16
+#    type: elasticsearch:7.7
 #    disk: 512
 
 # Due to logic in app/config/env/platformsh.php, do not change the service name to something different than 'varnish'
