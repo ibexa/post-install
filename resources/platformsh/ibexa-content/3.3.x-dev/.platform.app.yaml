@@ -153,7 +153,7 @@ hooks:
         export NVM_DIR="$HOME/.nvm"
         [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
         nvm current
-        nvm install 10.15.3
+        nvm install 14.18.3
 
         if [ -z "$COMPOSER_AUTH" ]; then
             echo "TIP: If you need to authenticate against Github/Gitlab/updates.ez.no, use COMPOSER_AUTH env variable"
@@ -168,7 +168,7 @@ hooks:
         set -e
 
         unset NPM_CONFIG_PREFIX
-        command -v nvm && nvm use 10.15.3
+        command -v nvm && nvm use 14.18.3
 
         if [ ! -f public/var/.platform.installed ]; then
             # Configure ElasticSearch mappings
