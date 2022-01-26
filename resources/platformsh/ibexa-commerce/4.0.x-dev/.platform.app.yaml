@@ -182,6 +182,7 @@ hooks:
         php bin/console cache:pool:clear cache.redis
         sh bin/platformsh_prestart_cacheclear.sh
         php -d memory_limit=-1 bin/console doctrine:database:drop --force
+        composer config --global process-timeout 1200
         SKIP_HTTPCACHE_PURGE="1" php -d memory_limit=-1 bin/console ibexa:install -vv
         unset SKIP_HTTPCACHE_PURGE
         php bin/console ibexa:graphql:generate-schema
