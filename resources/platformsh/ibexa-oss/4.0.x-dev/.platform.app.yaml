@@ -150,7 +150,7 @@ hooks:
         nvm install 14.18.3
 
         if [ -z "$COMPOSER_AUTH" ]; then
-            echo "TIP: If you need to authenticate against Github/Gitlab/updates.ez.no, use COMPOSER_AUTH env variable"
+            echo "TIP: If you need to authenticate against Github/Gitlab/updates.ibexa.co, use COMPOSER_AUTH env variable"
             echo "See: https://docs.platform.sh/guides/general/composer-auth.html#set-the-envcomposer_auth-project-variable"
         fi
 
