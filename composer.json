@@ -43,8 +43,8 @@
         "fix-cs-changed": "php-cs-fixer fix --config=.php_cs -v --show-progress=dots $(git diff ${GIT_DIFF_BASE:-origin/main} --diff-filter=ACMR --name-only \"*.php\"|paste -sd ' ')",
         "test": "phpunit -c phpunit.xml",
         "phpstan": "phpstan analyse -c phpstan.neon",
-        "check-cs-changed": "php-cs-fixer fix --diff --config=.php_cs --dry-run -v --show-progress=dots $(git diff ${GIT_DIFF_BASE:-origin/main} --diff-filter=ACMR --name-only \"*.php\"|paste -sd ' ')",
-        "check-cs": "php-cs-fixer fix --diff --config=.php_cs --dry-run -v --show-progress=dots"
+        "check-cs-changed": "php-cs-fixer fix --diff --config=.php-cs-fixer.php --dry-run -v --show-progress=dots $(git diff ${GIT_DIFF_BASE:-origin/main} --diff-filter=ACMR --name-only \"*.php\"|paste -sd ' ')",
+        "check-cs": "php-cs-fixer fix --diff --config=.php-cs-fixer.php --dry-run -v --show-progress=dots"
     },
     "scripts-descriptions": {
         "fix-cs": "Fix Coding standard issues in current checkout.",
