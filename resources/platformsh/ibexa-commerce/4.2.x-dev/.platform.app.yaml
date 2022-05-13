@@ -184,8 +184,10 @@ hooks:
         unset SKIP_HTTPCACHE_PURGE
         php bin/console ibexa:graphql:generate-schema
 
-        php bin/console ibexa:migration:import 010_change_admin_password.yaml
-        php bin/console ibexa:migration:migrate --file 010_change_admin_password.yaml
+        for migration in nightly_migrations/* ; do
+            php bin/console ibexa:migration:import $migration
+            php bin/console ibexa:migration:migrate --file $(basename $migration)
+        done
 
         # Now that mounts are available, clear cache on mount.
         # Note: Skip on PE Cluster setup using e.g. "if [$PLATFORM_BRANCH" != 'production']; then" & get p.sh to enable this on internal per node "pre_start" hook
