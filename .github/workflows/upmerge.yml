@@ -1,0 +1,10 @@
+name: Upmerge (caller)
+
+on:
+    push:
+
+jobs:
+    merge:
+        uses: ibexa/gh-workflows/.github/workflows/upmerge.yml@main
+        secrets:
+            robot-token: ${{ secrets.EZROBOT_PAT }}
