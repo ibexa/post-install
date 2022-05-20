@@ -122,7 +122,7 @@ mounts:
     'public/var':
         source: local
         source_path: var
-    'config/graphql/types/ezplatform':
+    'config/graphql/types/ibexa':
         source: local
         source_path: graphql_types
 # Uncomment if you need to use Kaliop Migrations on your setup and not able to get it to write to "var" dir.
@@ -231,6 +231,7 @@ runtime:
         - readline
         - redis
         - igbinary
+        - sodium
         #- apcu
         #- name: 'blackfire'
         #  configuration:
