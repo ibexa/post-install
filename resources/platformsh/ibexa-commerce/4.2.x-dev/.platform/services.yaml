@@ -5,7 +5,7 @@
 
 mysqldb:
     type: mariadb:10.4
-    disk: 1024
+    disk: 724
     configuration:
         schemas:
             - main
