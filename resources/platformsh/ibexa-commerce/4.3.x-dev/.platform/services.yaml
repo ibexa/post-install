@@ -5,7 +5,7 @@
 
 mysqldb:
     type: mariadb:10.4
-    disk: 1024
+    disk: 624
     configuration:
         schemas:
             - main
@@ -59,7 +59,7 @@ rediscache:
 
 solrsearch:
     type: solr:7.7
-    disk: 512
+    disk: 412
     configuration:
         configsets:
             mainconfig: !archive "configsets/solr6"
