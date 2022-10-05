@@ -177,9 +177,9 @@ hooks:
         # To workaround issues with p.sh Varnish we clear container cache & temporary set Symfony Proxy
         export SKIP_HTTPCACHE_PURGE="1"
         rm -Rf var/cache/$APP_ENV/*.*
+        php -d memory_limit=-1 bin/console doctrine:database:drop --force
         php bin/console cache:pool:clear cache.redis
         sh bin/platformsh_prestart_cacheclear.sh
-        php -d memory_limit=-1 bin/console doctrine:database:drop --force
         SKIP_HTTPCACHE_PURGE="1" php -d memory_limit=-1 bin/console ibexa:install -vv
         unset SKIP_HTTPCACHE_PURGE
         php bin/console ibexa:graphql:generate-schema
