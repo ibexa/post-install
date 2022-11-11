@@ -9,13 +9,13 @@ server {
     # Additional Assetic rules
     ## Don't forget to run php bin/console assetic:dump --env=prod
     ## and make sure to comment these out in DEV environment.
-    #if[APP_ENV!=dev] include ez_params.d/ez_prod_rewrite_params;
+    #if[APP_ENV!=dev] include ibexa_params.d/ibexa_prod_rewrite_params;
 
     # Include image rule for DFS or binary handler
-    include ez_params.d/ez_rewrite_%BINARY_DATA_HANDLER%image_params;
+    include ibexa_params.d/ibexa_rewrite_%BINARY_DATA_HANDLER%image_params;
 
     # Include remaining Ibexa rewrite rules
-    include ez_params.d/ez_rewrite_params;
+    include ibexa_params.d/ibexa_rewrite_params;
 
     # upload max size
     client_max_body_size %BODY_SIZE_LIMIT_M%;
@@ -29,7 +29,7 @@ server {
 
     location / {
         location ~ ^/index\.php(/|$) {
-            include ez_params.d/ez_fastcgi_params;
+            include ibexa_params.d/ibexa_fastcgi_params;
 
             # FPM socket
             # Possible values : unix:/var/run/php5-fpm.sock or 127.0.0.1:9000
@@ -39,7 +39,7 @@ server {
 
             # Environment.
             # Possible values: "prod" and "dev" out-of-the-box, other values possible with proper configuration
-            # Make sure to comment the "ez_params.d/ez_prod_rewrite_params" include above in dev.
+            # Make sure to comment the "ibexa_params.d/ibexa_prod_rewrite_params" include above in dev.
             # Defaults to "dev" if omitted
             #if[APP_ENV] fastcgi_param APP_ENV %APP_ENV%;
 
@@ -75,5 +75,5 @@ server {
     # access_log %BASEDIR%/app/logs/httpd-access.log;
     # error_log  %BASEDIR%/app/logs/httpd-error.log notice;
 
-    include ez_params.d/ez_server_params;
+    include ibexa_params.d/ibexa_server_params;
 }
