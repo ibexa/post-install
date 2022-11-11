@@ -1,7 +1,7 @@
 rewrite "^/var/([^/]+/)?storage/images(-versioned)?/(.*)" "/var/$1storage/images$2/$3" break;
 
 # Makes it possible to place your favicon at the root of your
-# eZ Platform instance. It will then be served directly.
+# Ibexa DXP instance. It will then be served directly.
 rewrite "^/favicon\.ico" "/favicon.ico" break;
 
 # Give direct access to robots.txt for use by crawlers (Google,

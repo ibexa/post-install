@@ -14,7 +14,7 @@ server {
     # Include image rule for DFS or binary handler
     include ez_params.d/ez_rewrite_%BINARY_DATA_HANDLER%image_params;
 
-    # Include remaining ez rewrite rules
+    # Include remaining Ibexa rewrite rules
     include ez_params.d/ez_rewrite_params;
 
     # upload max size
@@ -35,7 +35,7 @@ server {
             # Possible values : unix:/var/run/php5-fpm.sock or 127.0.0.1:9000
             fastcgi_pass %FASTCGI_PASS%;
 
-            ## eZ Platform ENVIRONMENT variables, used for customizing index.php execution (not used by console commands)
+            ## Ibexa DXP ENVIRONMENT variables, used for customizing index.php execution (not used by console commands)
 
             # Environment.
             # Possible values: "prod" and "dev" out-of-the-box, other values possible with proper configuration
@@ -60,7 +60,7 @@ server {
             # Defaults to not be set if env value is omitted or empty
             #if[TRUSTED_PROXIES] fastcgi_param TRUSTED_PROXIES "%TRUSTED_PROXIES%";
 
-            # TIP: There are many more environment variables supported by eZ Platform. However unlike those listed above
+            # TIP: There are many more environment variables supported by Ibexa DXP. However unlike those listed above
             #      they should in most cases rather be set in the environment then in vhost config to make sure cronjobs
             #      and cli command usage takes them into account as well.
         }
