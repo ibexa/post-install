@@ -56,10 +56,7 @@
         "check-cs": "Run code style checker for all files"
     },
     "config": {
-        "sort-packages": true,
-        "allow-plugins": {
-            "phpstan/extension-installer": true
-        }
+        "sort-packages": true
     },
     "extra": {
         "branch-alias": {
