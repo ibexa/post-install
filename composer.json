@@ -21,6 +21,7 @@
         "phpstan/phpstan-webmozart-assert": "^0.12.7",
         "symfony/console": "^5.2",
         "symfony/dotenv": "^5.2",
+        "symfony/finder": "^5.2",
         "symfony/filesystem": "^5.2",
         "symfony/phpunit-bridge": "^5.2",
         "symfony/process": "^5.2",
@@ -55,7 +56,10 @@
         "check-cs": "Run code style checker for all files"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "phpstan/extension-installer": true
+        }
     },
     "extra": {
         "branch-alias": {
