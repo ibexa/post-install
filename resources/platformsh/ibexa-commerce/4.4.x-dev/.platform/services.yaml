@@ -68,21 +68,9 @@ solrsearch:
                 core_properties: |
                     configSet=mainconfig
                     schema=schema.xml
-            econtent:
-                core_properties: |
-                    configSet=mainconfig
-                    schema=schema.xml
-            econtent_back:
-                core_properties: |
-                    configSet=mainconfig
-                    schema=schema.xml
         endpoints:
             collection1:
                 core: collection1
-            econtent:
-                core: econtent
-            econtent_back:
-                core: econtent_back
 
 # If you wish to use elasticsearch, uncomment this service and the corresponding relationship in .platform.app.yaml.
 #elasticsearch:
