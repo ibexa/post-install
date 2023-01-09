@@ -210,6 +210,11 @@ hooks:
         # Depending on your VCL, buy default this would trigger a soft purge (expiry) and allow grace period, however
         # even so if your change only affected certain subset of content, ideally you should only clear specific tags:
         ##bin/console fos:httpcache:invalidate:tag l44 c33 ct2 ...
+        
+        # It is possible to manipulate your Fastly VCL configuration directly from command line using Fastly CLI. 
+        # Official documentation on how to install: https://developer.fastly.com/learning/tools/cli#installing 
+        # Example VCL snippet upload using vcl_recv hook (remember about FASTLY_SERVICE_ID and FASTLY_KEY environmental variables):
+        ##fastly vcl snippet create --name="Enable Fastly IO" --version=active --autoclone --type recv --content=vendor/ibexa/fastly/fastly/ibexa_image_optimizer.vcl
 
     # Post deploy hook, like deploy but after being deployed and live, for deploy tasks we can do asynchronously
     # Tip: As this is running while web is running, and it's async, avoid doing anything like cache clearing that affects web requests here.
