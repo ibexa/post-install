@@ -1,9 +1,9 @@
 # This file describes an application. You can have multiple applications
 # in the same project.
 
-# Please see doc/platformsh/README.md and doc/platformsh/INSTALL.md for eZ specific getting started instructions.
+# Please see https://doc.ibexa.co/en/latest/getting_started/install_on_ibexa_cloud/ for Ibexa DXP specific getting started instructions.
 # Full documentation: https://docs.platform.sh
-# eZ requirements: https://doc.ezplatform.com/en/latest/getting_started/requirements/#ez-platform-cloud-requirements-and-setup
+# Ibexa DXP requirements: https://doc.ibexa.co/en/latest/getting_started/requirements/#ibexa-cloud-requirements-and-setup
 
 # The name of this app. Must be unique within a project.
 name: app
