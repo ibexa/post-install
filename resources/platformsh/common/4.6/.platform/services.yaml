@@ -57,11 +57,11 @@ rediscache:
 # Multi core setup is currently not supported on Platform.sh. Sharding does not work as the cores are
 # unable to reach each other
 #solrsearch:
-#    type: solr:7.7
+#    type: solr:8.11
 #    disk: 512
 #    configuration:
 #        configsets:
-#            mainconfig: !archive "configsets/solr6"
+#            mainconfig: !archive "configsets/solr8"
 #        cores:
 #            collection1:
 #                core_properties: |
