@@ -60,7 +60,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-main": "4.5.x-dev"
+            "dev-main": "4.6.x-dev"
         },
         "class": "Ibexa\\PostInstall\\PostInstall"
     }
