@@ -145,7 +145,8 @@ hooks:
         set -e
 
         # Install the version specified in the .nvmrc file
-        n auto
+        # but only if N command exists
+        hash n && n auto
 
         # Reset the location hash to recognize the newly installed version
         hash -r
