@@ -11,6 +11,7 @@ name: app
 dependencies:
     nodejs:
         yarn: "*"
+        n: "*"
     php:
         composer/composer: '^2.0'
 
@@ -54,6 +55,8 @@ variables:
         realpath_cache_size: 4096K
         realpath_cache_ttl: 600
     env:
+        # Location for N to store node versions
+        N_PREFIX: /app/.global
         # We disable Symfony Proxy (CacheKernel), as we rather use Varnish
         APP_HTTP_CACHE: 0
         # Warning: Only for Varnish on Platform.sh to workaround missing IP. Disable if you use Fastly or Symfony Proxy where this would be a security issue!
@@ -144,13 +147,12 @@ hooks:
     build: |
         set -e
 
-        # Install newer version of Node.js, as current default (v6LTS) does not play well with WebpackEncore
-        unset NPM_CONFIG_PREFIX
-        curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | dash
-        export NVM_DIR="$HOME/.nvm"
-        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-        nvm current
-        nvm install 14.18.3
+        # Install the version specified in the .nvmrc file
+        # but only if N command exists
+        hash n && n auto
+
+        # Reset the location hash to recognize the newly installed version
+        hash -r
 
         if [ -z "$COMPOSER_AUTH" ]; then
             echo "TIP: If you need to authenticate against Github/Gitlab/updates.ibexa.co, use COMPOSER_AUTH env variable"
@@ -163,9 +165,6 @@ hooks:
     # Note: Http traffic is paused while this is running, so for prod code this should finish as fast as possible, < 30s
     deploy: |
         set -e
-
-        unset NPM_CONFIG_PREFIX
-        command -v nvm && nvm use 14.18.3
 
         if [ ! -f public/var/.platform.installed ]; then
             # Configure ElasticSearch mappings
@@ -207,9 +206,9 @@ hooks:
         # Depending on your VCL, buy default this would trigger a soft purge (expiry) and allow grace period, however
         # even so if your change only affected certain subset of content, ideally you should only clear specific tags:
         ##bin/console fos:httpcache:invalidate:tag l44 c33 ct2 ...
-        
-        # It is possible to manipulate your Fastly VCL configuration directly from command line using Fastly CLI. 
-        # Official documentation on how to install: https://developer.fastly.com/learning/tools/cli#installing 
+
+        # It is possible to manipulate your Fastly VCL configuration directly from command line using Fastly CLI.
+        # Official documentation on how to install: https://developer.fastly.com/learning/tools/cli#installing
         # Example VCL snippet upload using vcl_recv hook (remember about FASTLY_SERVICE_ID and FASTLY_KEY environmental variables):
         ##fastly vcl custom create --name="Ibexa VCL" --main --version=latest --autoclone  --content=vendor/ibexa/fastly/fastly/ez_main.vcl
         ##fastly vcl snippet create --name="Shielding" --version=active --autoclone --type recv --content=vendor/ibexa/fastly/fastly/snippet_re_enable_shielding.vcl
