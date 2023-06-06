@@ -17,7 +17,7 @@ class IbexaProductVersion
     public const IBEXA_PRODUCTS = [
         'ibexa/commerce',
         'ibexa/experience',
-        'ibexa/content',
+        'ibexa/headless',
         'ibexa/oss',
     ];
 
