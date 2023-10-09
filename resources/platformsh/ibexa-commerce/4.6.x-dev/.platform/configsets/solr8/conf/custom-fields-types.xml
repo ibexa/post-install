@@ -17,9 +17,3 @@
     <field name="custom_geolocation_field_0_coordinate" type="double" indexed="true" stored="false"/>
     <field name="custom_geolocation_field_1_coordinate" type="double" indexed="true" stored="false"/>
     <copyField source="testtype_maplocation_value_location_gl" dest="custom_geolocation_field" />
-
-    <!--
-        This generates a field for prefix queries, using edge n-grams.
-    -->
-    <field name="ext_prefix_ngram" type="text_edge_ngram" indexed="true" stored="false" required="false" multiValued="true" />
-    <copyField source="meta_content__text_t" dest="ext_prefix_ngram" />
