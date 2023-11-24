@@ -218,8 +218,9 @@ hooks:
 
     # Post deploy hook, like deploy but after being deployed and live, for deploy tasks we can do asynchronously
     # Tip: As this is running while web is running, and it's async, avoid doing anything like cache clearing that affects web requests here.
-    #post_deploy: |
-    #    set -e
+    post_deploy: |
+        set -e
+        php bin/console fos:httpcache:invalidate:tag ez-all
 
 # The configuration of scheduled execution.
 # see https://docs.platform.sh/configuration/app/cron.html#cron-jobs
