@@ -44,7 +44,7 @@ variables:
     php:
         # Example of setting php.ini config
         #"display_errors": "On"
-        memory_limit: 512M
+        memory_limit: 2048M
         # The default OPcache configuration is not suited for Symfony applications
         opcache.memory_consumption: 256
         opcache.max_accelerated_files: 20000
@@ -103,7 +103,7 @@ web:
                     allow: true
 
 # The size of the persistent disk of the application (in MB).
-disk: 3072
+disk: 3572
 
 # The mounts that will be performed when the package is deployed.
 mounts:
@@ -159,6 +159,7 @@ hooks:
             echo "See: https://docs.platform.sh/guides/general/composer-auth.html#set-the-envcomposer_auth-project-variable"
         fi
 
+        composer config --global process-timeout 1200
         composer install --no-dev --prefer-dist --no-progress --no-interaction --optimize-autoloader
 
     # Deploy hook, access to services & done once (per cluster, not per node), only mounts are writable at this point
@@ -166,21 +167,23 @@ hooks:
     deploy: |
         set -e
 
-        if [ ! -f public/var/.platform.installed ]; then
-            # Configure ElasticSearch mappings
-            ##php bin/console ibexa:elasticsearch:put-index-template
+        # Configure ElasticSearch mappings
+        #php bin/console ibexa:elasticsearch:put-index-template
 
-            # To workaround issues with p.sh Varnish we clear container cache & temporary set Symfony Proxy
-            export SKIP_HTTPCACHE_PURGE="1"
-            rm -Rf var/cache/$APP_ENV/*
-            php bin/console cache:pool:clear cache.redis
-            sh bin/platformsh_prestart_cacheclear.sh
-            SKIP_HTTPCACHE_PURGE="1" php -d memory_limit=-1 bin/console ibexa:install
-            unset SKIP_HTTPCACHE_PURGE
-            php bin/console ibexa:graphql:generate-schema
+        # To workaround issues with p.sh Varnish we clear container cache & temporary set Symfony Proxy
+        export SKIP_HTTPCACHE_PURGE="1"
+        rm -Rf var/cache/$APP_ENV/*.*
+        php -d memory_limit=-1 bin/console doctrine:database:drop --force
+        php bin/console cache:pool:clear cache.redis
+        sh bin/platformsh_prestart_cacheclear.sh
+        SKIP_HTTPCACHE_PURGE="1" php -d memory_limit=-1 bin/console ibexa:install -vv
+        unset SKIP_HTTPCACHE_PURGE
+        php bin/console ibexa:graphql:generate-schema
 
-            touch public/var/.platform.installed
-        fi
+        for migration in nightly_migrations/* ; do
+            php bin/console ibexa:migration:import $migration
+            php bin/console ibexa:migration:migrate --file $(basename $migration)
+        done
 
         # Now that mounts are available, clear cache on mount.
         # Note: Skip on PE Cluster setup using e.g. "if [$PLATFORM_BRANCH" != 'production']; then" & get p.sh to enable this on internal per node "pre_start" hook
@@ -215,8 +218,9 @@ hooks:
 
     # Post deploy hook, like deploy but after being deployed and live, for deploy tasks we can do asynchronously
     # Tip: As this is running while web is running, and it's async, avoid doing anything like cache clearing that affects web requests here.
-    #post_deploy: |
-    #    set -e
+    post_deploy: |
+        set -e
+        php bin/console fos:httpcache:invalidate:tag ez-all
 
 # The configuration of scheduled execution.
 # see https://docs.platform.sh/configuration/app/cron.html#cron-jobs
@@ -243,6 +247,8 @@ runtime:
         - redis
         - igbinary
         - sodium
+        - blackfire
+        - newrelic
         #- apcu
         #- name: 'blackfire'
         #  configuration:
