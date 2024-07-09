@@ -108,6 +108,7 @@ should not remove or drastically change the existing definitions.
          This field is required to allow random sorting
      -->
     <dynamicField name="random*" type="random" indexed="true" stored="false"/>
+
     <!--
       This field is required since Solr 4
     -->
