@@ -104,7 +104,7 @@ class IbexaSetupCommand extends BaseCommand
             $output->writeln("\nPlatform.sh config files installed successfully");
         }
 
-        return 0;
+        return \Symfony\Component\Console\Command\Command::SUCCESS;
     }
 
     protected function getCommonFiles(string $product): Finder
