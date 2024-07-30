@@ -43,7 +43,10 @@ relationships:
 variables:
     php:
         # Example of setting php.ini config
-        #"display_errors": "On"
+        # Display of errors should be disabled in production.
+        display_errors: Off
+        display_startup_errors: Off
+
         memory_limit: 512M
         # The default OPcache configuration is not suited for Symfony applications
         opcache.memory_consumption: 256
