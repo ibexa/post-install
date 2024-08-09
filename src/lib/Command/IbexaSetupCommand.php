@@ -15,6 +15,7 @@ use Composer\Semver\Semver;
 use Composer\Semver\VersionParser;
 use Exception;
 use Ibexa\PostInstall\IbexaProductVersion;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -104,7 +105,7 @@ class IbexaSetupCommand extends BaseCommand
             $output->writeln("\nPlatform.sh config files installed successfully");
         }
 
-        return \Symfony\Component\Console\Command\Command::SUCCESS;
+        return Command::SUCCESS;
     }
 
     protected function getCommonFiles(string $product): Finder
