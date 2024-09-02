@@ -86,6 +86,7 @@ should not remove or drastically change the existing definitions.
 
     <fieldType name="currency" class="solr.CurrencyField" precisionStep="8" defaultCurrency="USD" currencyConfig="currency.xml" />
 
+    <fieldType name="random" class="solr.RandomSortField" indexed="true"/>
 
 
 
@@ -136,6 +137,11 @@ should not remove or drastically change the existing definitions.
    <!--
         This field is required to allow random sorting
     -->
+    <dynamicField name="random*" type="random" indexed="true" stored="false"/>
+
+    <!--
+         This field is required to allow random sorting
+     -->
     <dynamicField name="random*" type="random" indexed="true" stored="false"/>
 
     <!--
