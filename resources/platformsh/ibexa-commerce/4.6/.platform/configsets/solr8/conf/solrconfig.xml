@@ -765,6 +765,9 @@
        queries across multiple shards
     -->
   <requestHandler name="/select" class="solr.SearchHandler">
+    <arr name="last-components">
+      <str>spellcheck</str>
+    </arr>
     <!-- default values for query parameters can be specified, these
          will be overridden by parameters in the request
       -->
