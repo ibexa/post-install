@@ -60,7 +60,7 @@ sub vcl_recv {
     if (req.http.cookie) {
         set req.http.cookie = ";" + req.http.cookie;
         set req.http.cookie = regsuball(req.http.cookie, "; +", ";");
-        set req.http.cookie = regsuball(req.http.cookie, ";(eZSESSID[^=]*)=", "; \1=");
+        set req.http.cookie = regsuball(req.http.cookie, ";(IBX_SESSION_ID[^=]*)=", "; \1=");
         set req.http.cookie = regsuball(req.http.cookie, ";(ibexa-[^=]*)=", "; \1=");
         set req.http.cookie = regsuball(req.http.cookie, ";[^ ][^;]*", "");
         set req.http.cookie = regsuball(req.http.cookie, "^[; ]+|[; ]+$", "");
