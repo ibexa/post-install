@@ -27,8 +27,7 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class IbexaSetupCommand extends BaseCommand
 {
-    /** @var \Composer\Semver\VersionParser */
-    private $versionParser;
+    private VersionParser $versionParser;
 
     private const PSH_RESOURCES_PATH = __DIR__ . '/../../../resources/platformsh';
 
@@ -40,6 +39,9 @@ class IbexaSetupCommand extends BaseCommand
         ;
     }
 
+    /**
+     * @throws \Exception
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if ($input->getOption('platformsh')) {
@@ -108,6 +110,9 @@ class IbexaSetupCommand extends BaseCommand
         return Command::SUCCESS;
     }
 
+    /**
+     * @throws \Exception
+     */
     protected function getCommonFiles(string $product): Finder
     {
         $versionDir = $this->getVersionDirectory($product, self::PSH_RESOURCES_PATH . '/common');
@@ -122,6 +127,9 @@ class IbexaSetupCommand extends BaseCommand
         return $finder;
     }
 
+    /**
+     * @throws \Exception
+     */
     protected function getProductSpecificFiles(string $product, string $version): Finder
     {
         $productDir = str_replace('/', '-', $product);
@@ -198,7 +206,7 @@ class IbexaSetupCommand extends BaseCommand
 
     private function getVersionParser(): VersionParser
     {
-        if (null === $this->versionParser) {
+        if (!isset($this->versionParser)) {
             $this->versionParser = new VersionParser();
         }
 
