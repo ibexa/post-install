@@ -119,7 +119,7 @@
 
     # Enable gzip encoding
     <IfModule mod_deflate.c>
-        AddOutputFilterByType DEFLATE text/plain text/css application/json text/javascript application/javascript text/xml application/xml application/xml+rss
+        AddOutputFilterByType DEFLATE text/plain text/css text/javascript application/javascript text/xml application/xml+rss
         # NOTE: Using gzip on text/html can be a security issue. See http://breachattack.com.
     </IfModule>
 </VirtualHost>
