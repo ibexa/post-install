@@ -6,7 +6,7 @@
  */
 declare(strict_types=1);
 
-namespace Ibexa\Platform\PostInstall\Command;
+namespace Ibexa\PostInstall\Command;
 
 use Composer\Command\BaseCommand;
 use Composer\InstalledVersions;
@@ -14,7 +14,7 @@ use Composer\IO\IOInterface;
 use Composer\Semver\Semver;
 use Composer\Semver\VersionParser;
 use Exception;
-use Ibexa\Platform\PostInstall\IbexaProductVersion;
+use Ibexa\PostInstall\IbexaProductVersion;
 use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;

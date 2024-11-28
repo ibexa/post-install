@@ -6,7 +6,7 @@
  */
 declare(strict_types=1);
 
-namespace Ibexa\Platform\PostInstall;
+namespace Ibexa\PostInstall;
 
 use Composer\InstalledVersions;
 use RuntimeException;
@@ -17,7 +17,7 @@ class IbexaProductVersion
     public const IBEXA_PRODUCTS = [
         'ibexa/commerce',
         'ibexa/experience',
-        'ibexa/content',
+        'ibexa/headless',
         'ibexa/oss',
     ];
 

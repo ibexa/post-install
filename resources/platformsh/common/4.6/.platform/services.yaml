@@ -56,40 +56,27 @@ rediscache:
 # vendor/ezsystems/ezplatform-solr-search-engine/bin/generate-solr-config.sh
 # Multi core setup is currently not supported on Platform.sh. Sharding does not work as the cores are
 # unable to reach each other
-
-solrsearch:
-    type: solr:7.7
-    disk: 512
-    configuration:
-        configsets:
-            mainconfig: !archive "configsets/solr6"
-        cores:
-            collection1:
-                core_properties: |
-                    configSet=mainconfig
-                    schema=schema.xml
-            econtent:
-                core_properties: |
-                    configSet=mainconfig
-                    schema=schema.xml
-            econtent_back:
-                core_properties: |
-                    configSet=mainconfig
-                    schema=schema.xml
-        endpoints:
-            collection1:
-                core: collection1
-            econtent:
-                core: econtent
-            econtent_back:
-                core: econtent_back
+#solrsearch:
+#    type: solr:7.7
+#    disk: 512
+#    configuration:
+#        configsets:
+#            mainconfig: !archive "configsets/solr6"
+#        cores:
+#            collection1:
+#                core_properties: |
+#                    configSet=mainconfig
+#                    schema=schema.xml
+#        endpoints:
+#            collection1:
+#                core: collection1
 
 # If you wish to use elasticsearch, uncomment this service and the corresponding relationship in .platform.app.yaml.
 #elasticsearch:
 #    type: elasticsearch:7.7
 #    disk: 512
 
-# Due to logic in EzSystems\EzPlatformCoreBundle\DependencyInjection\EzPlatformCoreExtension, do not change the service name to something different from 'varnish'
+# Due to logic in app/config/env/platformsh.php, do not change the service name to something different than 'varnish'
 varnish:
     type: 'varnish:6.0'
     relationships:
