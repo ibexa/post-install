@@ -133,9 +133,7 @@ sub vcl_backend_response {
 
     // Compressing the content
     if (beresp.http.Content-Type ~ "application/javascript"
-        || beresp.http.Content-Type ~ "application/json"
         || beresp.http.Content-Type ~ "application/vnd.ms-fontobject"
-        || beresp.http.Content-Type ~ "application/vnd.ibexa.api"
         || beresp.http.Content-Type ~ "application/x-font-ttf"
         || beresp.http.Content-Type ~ "image/svg+xml"
         || beresp.http.Content-Type ~ "text/css"
