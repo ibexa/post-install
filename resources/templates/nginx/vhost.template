@@ -25,7 +25,7 @@ server {
 
     # Gzip is enabled by default on most platforms, so here we just specify mime types to compress.
     # NOTE: Using gzip on text/html can be a security issue, unless you somehow pad. See http://breachattack.com
-    gzip_types text/plain text/css application/json text/javascript application/javascript text/xml application/xml application/xml+rss;
+    gzip_types text/plain text/css text/javascript application/javascript text/xml application/xml+rss;
 
     location / {
         location ~ ^/index\.php(/|$) {
