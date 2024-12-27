@@ -32,7 +32,7 @@ server {
             include ibexa_params.d/ibexa_fastcgi_params;
 
             # FPM socket
-            # Possible values : unix:/var/run/php5-fpm.sock or 127.0.0.1:9000
+            # Possible values : unix:/var/run/php/php-fpm.sock or 127.0.0.1:9000
             fastcgi_pass %FASTCGI_PASS%;
 
             ## Ibexa DXP ENVIRONMENT variables, used for customizing index.php execution (not used by console commands)
