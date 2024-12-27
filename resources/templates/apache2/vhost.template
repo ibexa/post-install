@@ -26,8 +26,8 @@
             # See: https://wiki.apache.org/httpd/PHP-FPM#apache_httpd_2.4
 
             # For best performance, prefer socket use. This requires Linux, and that both Apache and PHP has access to
-            # the socket file `/var/run/php5-fpm.sock` via local file system and hence run on the same machine.
-            #SetHandler "proxy:unix:/var/run/php5-fpm.sock|fcgi://localhost/"
+            # the socket file `/var/run/php8.3-fpm.sock` via local file system and hence run on the same machine.
+            #SetHandler "proxy:unix:/var/run/php8.3-fpm.sock|fcgi://localhost/"
             # For TCP usage, if you're not on Linux, or Apache and PHP are on separate machines, instead use fcgi: form.
             # (Optionally hint php-fpm processes count using: https://wiki.apache.org/httpd/PHP-FPM#Proxy_via_handler)
             #SetHandler "proxy:fcgi://localhost/:9000"
