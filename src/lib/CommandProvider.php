@@ -12,7 +12,7 @@ use Ibexa\PostInstall\Command\IbexaSetupCommand;
 
 class CommandProvider implements \Composer\Plugin\Capability\CommandProvider
 {
-    public function getCommands()
+    public function getCommands(): array
     {
         return [
             new IbexaSetupCommand(),

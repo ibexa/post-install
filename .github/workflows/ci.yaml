@@ -14,9 +14,9 @@ jobs:
     strategy:
       matrix:
         php:
-          - '8.0'
+          - '8.3'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Setup PHP Action
         uses: shivammathur/setup-php@v2
@@ -42,9 +42,7 @@ jobs:
       fail-fast: false
       matrix:
         php:
-          - '7.4'
-          - '8.0'
-          - '8.1'
+          - '8.3'
 
     steps:
       - uses: actions/checkout@v2
@@ -57,7 +55,7 @@ jobs:
           extensions: pdo_sqlite, gd
           tools: cs2pr
 
-      - uses: "ramsey/composer-install@v1"
+      - uses: ramsey/composer-install@v3
         with:
           dependency-versions: "highest"
 
