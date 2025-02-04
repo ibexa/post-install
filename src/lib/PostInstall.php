@@ -32,7 +32,7 @@ class PostInstall implements PluginInterface, Capable
         $io->write('[Ibexa PostInstall tool] Uninstall', true, IOInterface::DEBUG);
     }
 
-    public function getCapabilities()
+    public function getCapabilities(): array
     {
         return [
             CommandProvider::class => SetupToolCommandProvider::class,
