@@ -15,6 +15,7 @@ use Composer\Semver\Semver;
 use Composer\Semver\VersionParser;
 use Exception;
 use Ibexa\PostInstall\IbexaProductVersion;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -25,6 +26,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
+#[AsCommand(name: 'ibexa:setup', description: 'Runs post install configuration tool.')]
 class IbexaSetupCommand extends BaseCommand
 {
     private VersionParser $versionParser;
@@ -33,10 +35,12 @@ class IbexaSetupCommand extends BaseCommand
 
     protected function configure(): void
     {
-        $this->setName('ibexa:setup')
-             ->setDescription('Runs post install configuration tool.')
-             ->addOption('platformsh', null, InputOption::VALUE_NONE, 'Install Platform.sh config files')
-        ;
+        $this->addOption(
+            'platformsh',
+            null,
+            InputOption::VALUE_NONE,
+            'Install Platform.sh config files'
+        );
     }
 
     /**
