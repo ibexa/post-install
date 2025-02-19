@@ -18,4 +18,7 @@ return RectorConfig::configure()
         IbexaSetList::IBEXA_50->value,
         SymfonySetList::SYMFONY_60,
         SymfonySetList::SYMFONY_61,
+        SymfonySetList::SYMFONY_62,
+        SymfonySetList::SYMFONY_63,
+        SymfonySetList::SYMFONY_64,
     ]);
