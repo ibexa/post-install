@@ -33,6 +33,40 @@ jobs:
       - name: Run code style check
         run: composer run-script check-cs -- --format=checkstyle | cs2pr
 
+  rector:
+    name: Run rector
+    runs-on: "ubuntu-22.04"
+    strategy:
+      matrix:
+        php:
+          - '8.3'
+    steps:
+      -   uses: actions/checkout@v4
+
+      -   name: Setup PHP Action
+          uses: shivammathur/setup-php@v2
+          with:
+            php-version: ${{ matrix.php }}
+            coverage: none
+            extensions: 'pdo_sqlite, gd'
+            tools: cs2pr
+
+      -   name: Add composer keys for private packagist
+          run: |
+            composer config http-basic.updates.ibexa.co $SATIS_NETWORK_KEY $SATIS_NETWORK_TOKEN
+            composer config github-oauth.github.com $TRAVIS_GITHUB_TOKEN
+          env:
+            SATIS_NETWORK_KEY: ${{ secrets.SATIS_NETWORK_KEY }}
+            SATIS_NETWORK_TOKEN: ${{ secrets.SATIS_NETWORK_TOKEN }}
+            TRAVIS_GITHUB_TOKEN: ${{ secrets.TRAVIS_GITHUB_TOKEN }}
+
+      -   uses: ramsey/composer-install@v3
+          with:
+            dependency-versions: highest
+
+      -   name: Run rector
+          run: vendor/bin/rector process --dry-run --ansi
+
   tests:
     name: Tests
     runs-on: "ubuntu-20.04"
