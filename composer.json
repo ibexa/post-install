@@ -17,6 +17,7 @@
     "require-dev": {
         "composer/composer": "^2.0.8",
         "ibexa/code-style": "~2.0.0",
+        "ibexa/rector": "~5.0.x-dev",
         "phpstan/phpstan": "^1",
         "phpstan/phpstan-phpunit": "^1",
         "phpstan/phpstan-webmozart-assert": "^1",
