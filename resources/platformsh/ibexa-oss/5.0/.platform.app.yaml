@@ -172,7 +172,7 @@ hooks:
             rm -Rf var/cache/$APP_ENV/*
             php bin/console cache:pool:clear cache.redis
             sh bin/platformsh_prestart_cacheclear.sh
-            SKIP_HTTPCACHE_PURGE="1" php -d memory_limit=-1 bin/console ibexa:install
+            SKIP_HTTPCACHE_PURGE="1" php -d memory_limit=-1 bin/console ibexa:install --no-interaction
             unset SKIP_HTTPCACHE_PURGE
             php bin/console ibexa:graphql:generate-schema
 
