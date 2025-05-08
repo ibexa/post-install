@@ -158,13 +158,17 @@ hooks:
             echo "TIP: If you need to authenticate against Github/Gitlab/updates.ibexa.co, use COMPOSER_AUTH env variable"
             echo "See: https://docs.platform.sh/guides/general/composer-auth.html#set-the-envcomposer_auth-project-variable"
         fi
-
-        composer install --no-dev --prefer-dist --no-progress --no-interaction --optimize-autoloader
+        
+        curl -fs https://get.symfony.com/cloud/configurator | bash
+        
+        NODE_VERSION=v18.19.0 symfony-build
 
     # Deploy hook, access to services & done once (per cluster, not per node), only mounts are writable at this point
     # Note: Http traffic is paused while this is running, so for prod code this should finish as fast as possible, < 30s
     deploy: |
         set -e
+        
+        symfony-deploy
 
         if [ ! -f public/var/.platform.installed ]; then
             # To workaround issues with p.sh Varnish we clear container cache & temporary set Symfony Proxy
