@@ -21,4 +21,7 @@ return RectorConfig::configure()
         SymfonySetList::SYMFONY_62,
         SymfonySetList::SYMFONY_63,
         SymfonySetList::SYMFONY_64,
+        SymfonySetList::SYMFONY_70,
+        SymfonySetList::SYMFONY_71,
+        SymfonySetList::SYMFONY_72,
     ]);
