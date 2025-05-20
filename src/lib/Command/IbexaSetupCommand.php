@@ -172,7 +172,20 @@ class IbexaSetupCommand extends BaseCommand
             )
         );
 
-        $productPackage = InstalledVersions::getRawData()['versions'][$product];
+        $allRawDataSets = InstalledVersions::getAllRawData();
+        $productPackage = null;
+
+        foreach ($allRawDataSets as $rawData) {
+            if (isset($rawData['versions'][$product])) {
+                $productPackage = $rawData['versions'][$product];
+                break;
+            }
+        }
+
+        if ($productPackage === null) {
+            throw new RuntimeException(sprintf('Could not find product "%s" in installed versions.', $product));
+        }
+
         $aliases = $productPackage['aliases'] ?? [];
         $productVersion = $productPackage['version'] ?? '';
 
