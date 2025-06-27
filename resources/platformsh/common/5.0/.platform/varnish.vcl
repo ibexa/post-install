@@ -40,7 +40,7 @@ sub vcl_recv {
     }
 
     // Trigger cache purge if needed
-    call ez_purge;
+    call ibexa_purge;
 
     // Don't cache requests other than GET and HEAD.
     if (req.method != "GET" && req.method != "HEAD") {
@@ -146,13 +146,13 @@ sub vcl_backend_response {
 // Handle purge
 // You may add FOSHttpCacheBundle tagging rules
 // See http://foshttpcache.readthedocs.org/en/latest/varnish-configuration.html#id4
-sub ez_purge {
+sub ibexa_purge {
     // Retrieve purge token, needs to be here due to restart, match for PURGE method done within
     call ez_invalidate_token;
 
     # Adapted with acl from vendor/friendsofsymfony/http-cache/resources/config/varnish/fos_tags_xkey.vcl
     if (req.method == "PURGEKEYS") {
-        call ez_purge_acl;
+        call ibexa_purge_acl;
 
         # If neither of the headers are provided we return 400 to simplify detecting wrong configuration
         if (!req.http.xkey-purge && !req.http.xkey-softpurge) {
@@ -175,13 +175,13 @@ sub ez_purge {
 
     # Adapted with acl from vendor/friendsofsymfony/http-cache/resources/config/varnish/fos_purge.vcl
     if (req.method == "PURGE") {
-        call ez_purge_acl;
+        call ibexa_purge_acl;
 
         return (purge);
     }
 }
 
-sub ez_purge_acl {
+sub ibexa_purge_acl {
     if (req.http.x-invalidate-token) {
         if (req.http.x-invalidate-token != req.http.x-backend-invalidate-token) {
             return (synth(405, "Method not allowed"));
