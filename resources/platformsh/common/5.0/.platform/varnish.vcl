@@ -1,7 +1,7 @@
 // Varnish VCL for Platform.sh with:
 // - Varnish 6.0 or higher (6.0LTS recommended, and is what we mainly test against)
 //   - Varnish xkey vmod (via varnish-modules package 0.10.2 or higher, or via Varnish Plus)
-// - eZ Platform 3.x or higher with ezplatform-http-cache (this) bundle
+// - Ibexa DXP 5.x or higher with ibexa/http-cache bundle
 //
 
 // Not applicable on Platform.sh:
@@ -25,7 +25,7 @@ acl debuggers {
 sub vcl_recv {
 
     // Set the backend
-    //set req.backend_hint = ezplatform;
+    //set req.backend_hint = ibexa;
     // Platform.sh specific:
     set req.backend_hint = app.backend();
 
@@ -40,7 +40,7 @@ sub vcl_recv {
     }
 
     // Trigger cache purge if needed
-    call ez_purge;
+    call ibexa_purge;
 
     // Don't cache requests other than GET and HEAD.
     if (req.method != "GET" && req.method != "HEAD") {
@@ -81,7 +81,7 @@ sub vcl_recv {
     set req.url = std.querysort(req.url);
 
     // Retrieve client user context hash and add it to the forwarded request.
-    call ez_user_context_hash;
+    call ibexa_user_context_hash;
 
     // If it passes all these tests, do a lookup anyway.
     return (hash);
@@ -146,13 +146,13 @@ sub vcl_backend_response {
 // Handle purge
 // You may add FOSHttpCacheBundle tagging rules
 // See http://foshttpcache.readthedocs.org/en/latest/varnish-configuration.html#id4
-sub ez_purge {
+sub ibexa_purge {
     // Retrieve purge token, needs to be here due to restart, match for PURGE method done within
-    call ez_invalidate_token;
+    call ibexa_invalidate_token;
 
     # Adapted with acl from vendor/friendsofsymfony/http-cache/resources/config/varnish/fos_tags_xkey.vcl
     if (req.method == "PURGEKEYS") {
-        call ez_purge_acl;
+        call ibexa_purge_acl;
 
         # If neither of the headers are provided we return 400 to simplify detecting wrong configuration
         if (!req.http.xkey-purge && !req.http.xkey-softpurge) {
@@ -175,13 +175,13 @@ sub ez_purge {
 
     # Adapted with acl from vendor/friendsofsymfony/http-cache/resources/config/varnish/fos_purge.vcl
     if (req.method == "PURGE") {
-        call ez_purge_acl;
+        call ibexa_purge_acl;
 
         return (purge);
     }
 }
 
-sub ez_purge_acl {
+sub ibexa_purge_acl {
     if (req.http.x-invalidate-token) {
         if (req.http.x-invalidate-token != req.http.x-backend-invalidate-token) {
             return (synth(405, "Method not allowed"));
@@ -192,7 +192,7 @@ sub ez_purge_acl {
 }
 
 // Sub-routine to get client user context hash, used to for being able to vary page cache on user rights.
-sub ez_user_context_hash {
+sub ibexa_user_context_hash {
 
     // Prevent tampering attacks on the hash mechanism
     if (req.restarts == 0
@@ -241,7 +241,7 @@ sub ez_user_context_hash {
 }
 
 // Sub-routine to get invalidate token.
-sub ez_invalidate_token {
+sub ibexa_invalidate_token {
     // Prevent tampering attacks on the token mechanisms
     if (req.restarts == 0
         && (req.http.accept ~ "application/vnd.ezplatform.invalidate-token"
