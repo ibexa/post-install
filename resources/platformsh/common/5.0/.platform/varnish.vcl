@@ -1,7 +1,7 @@
 // Varnish VCL for Platform.sh with:
 // - Varnish 6.0 or higher (6.0LTS recommended, and is what we mainly test against)
 //   - Varnish xkey vmod (via varnish-modules package 0.10.2 or higher, or via Varnish Plus)
-// - eZ Platform 3.x or higher with ezplatform-http-cache (this) bundle
+// - Ibexa DXP 5.x or higher with ibexa/http-cache bundle
 //
 
 // Not applicable on Platform.sh:
@@ -25,7 +25,7 @@ acl debuggers {
 sub vcl_recv {
 
     // Set the backend
-    //set req.backend_hint = ezplatform;
+    //set req.backend_hint = ibexa;
     // Platform.sh specific:
     set req.backend_hint = app.backend();
 
