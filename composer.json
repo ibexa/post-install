@@ -21,12 +21,12 @@
         "phpstan/phpstan": "^2.0",
         "phpstan/phpstan-phpunit": "^2.0",
         "phpstan/phpstan-webmozart-assert": "^2.0",
-        "symfony/console": "^7.2",
-        "symfony/dotenv": "^7.2",
-        "symfony/filesystem": "^7.2",
-        "symfony/finder": "^7.2",
-        "symfony/phpunit-bridge": "^7.2",
-        "symfony/process": "^7.2"
+        "symfony/console": "^7.3",
+        "symfony/dotenv": "^7.3",
+        "symfony/filesystem": "^7.3",
+        "symfony/finder": "^7.3",
+        "symfony/phpunit-bridge": "^7.3",
+        "symfony/process": "^7.3"
     },
     "autoload": {
         "psr-4": {
