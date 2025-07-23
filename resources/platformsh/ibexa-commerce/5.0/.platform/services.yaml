@@ -74,7 +74,7 @@ solrsearch:
 
 # If you wish to use elasticsearch, uncomment this service and the corresponding relationship in .platform.app.yaml.
 #elasticsearch:
-#    type: elasticsearch:7.7
+#    type: elasticsearch:7.17
 #    disk: 512
 
 # Due to logic in Ibexa\Bundle\Core\DependencyInjection\IbexaCoreExtension, do not change the service name to something different from 'varnish'
