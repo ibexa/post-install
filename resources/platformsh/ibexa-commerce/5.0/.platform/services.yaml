@@ -24,7 +24,7 @@ mysqldb:
 
 # For use by Symfony Cache (used by Ibexa DXP SPI Persistence Cache)
 rediscache:
-    type: 'redis:5.0'
+    type: 'redis:7.2'
     # For cache you might need to increase the size of your plan if your installation has a sizeable amount of content.
     # Check with platform.sh staff if in doubt on this, and if it would make sense to configure larger redis size here.
     # size: L
@@ -37,14 +37,14 @@ rediscache:
 # If you wish to have a separate Redis instance for sessions, uncomment
 # this service and the corresponding relationship in .platform.app.yaml.
 #redissession:
-#    type: 'redis:5.0'
+#    type: 'redis:7.2'
 #    configuration:
 #        maxmemory_policy: allkeys-lru
 #
 # Alternatively if you have a requirement that sessions are persisted across server/redis restarts,
 # have storage space to spare for this, and don't mind a bit slower instance type of redis
 #redissession:
-#    type: redis-persistent:5.0
+#    type: redis-persistent:7.2
 # Disk size should be bigger than Redis'  "maxmemory" setting due to https://redis.io/topics/persistence#log-rewriting.
 # The memory given to Redis depends on your plan and "size: ". Adjust "disk: " accordingly.
 #    disk: 512
