@@ -4,7 +4,7 @@
 #     Reach out to platform.sh support to get help on this and insight into your disk/memory usage.
 
 mysqldb:
-    type: mariadb:10.4
+    type: mariadb:10.11
     disk: 1024
     configuration:
         schemas:
@@ -24,7 +24,7 @@ mysqldb:
 
 # For use by Symfony Cache (used by Ibexa DXP SPI Persistence Cache)
 rediscache:
-    type: 'redis:5.0'
+    type: 'redis:7.2'
     # For cache you might need to increase the size of your plan if your installation has a sizeable amount of content.
     # Check with platform.sh staff if in doubt on this, and if it would make sense to configure larger redis size here.
     # size: L
@@ -37,14 +37,14 @@ rediscache:
 # If you wish to have a separate Redis instance for sessions, uncomment
 # this service and the corresponding relationship in .platform.app.yaml.
 #redissession:
-#    type: 'redis:5.0'
+#    type: 'redis:7.2'
 #    configuration:
 #        maxmemory_policy: allkeys-lru
 #
 # Alternatively if you have a requirement that sessions are persisted across server/redis restarts,
 # have storage space to spare for this, and don't mind a bit slower instance type of redis
 #redissession:
-#    type: redis-persistent:5.0
+#    type: redis-persistent:7.2
 # Disk size should be bigger than Redis'  "maxmemory" setting due to https://redis.io/topics/persistence#log-rewriting.
 # The memory given to Redis depends on your plan and "size: ". Adjust "disk: " accordingly.
 #    disk: 512
@@ -57,7 +57,7 @@ rediscache:
 # Multi core setup is currently not supported on Platform.sh. Sharding does not work as the cores are
 # unable to reach each other
 #solrsearch:
-#    type: solr:7.7
+#    type: solr:8.11
 #    disk: 512
 #    configuration:
 #        configsets:
@@ -73,7 +73,7 @@ rediscache:
 
 # If you wish to use elasticsearch, uncomment this service and the corresponding relationship in .platform.app.yaml.
 #elasticsearch:
-#    type: elasticsearch:7.7
+#    type: elasticsearch:7.17
 #    disk: 512
 
 # Due to logic in app/config/env/platformsh.php, do not change the service name to something different than 'varnish'
