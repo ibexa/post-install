@@ -1,0 +1,27 @@
+name: Rector PHP
+
+on:
+    push:
+        branches:
+            - main
+            - '[0-9]+.[0-9]+'
+    pull_request: ~
+
+jobs:
+    rector:
+        name: Run rector
+        runs-on: "ubuntu-22.04"
+        strategy:
+            matrix:
+                php:
+                    - '8.3'
+        steps:
+            -   uses: actions/checkout@v5
+
+            -   uses: ibexa/gh-workflows/actions/composer-install@main
+                with:
+                    gh-client-id: ${{ secrets.AUTOMATION_CLIENT_ID }}
+                    gh-client-secret: ${{ secrets.AUTOMATION_CLIENT_SECRET }}
+
+            -   name: Run rector
+                run: vendor/bin/rector process --dry-run --ansi
