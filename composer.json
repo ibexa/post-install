@@ -1,7 +1,7 @@
 {
     "name": "ibexa/post-install",
     "description": "Post Installation Tool for Ibexa products",
-    "license": "proprietary",
+    "license": "(GPL-2.0-only or proprietary)",
     "type": "composer-plugin",
     "authors": [
         {
