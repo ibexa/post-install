@@ -72,10 +72,8 @@ solrsearch:
             collection1:
                 core: collection1
 
-# If you wish to use elasticsearch, uncomment this service and the corresponding relationship in .platform.app.yaml.
-#elasticsearch:
-#    type: elasticsearch:7.17
-#    disk: 512
+# If you wish to use elasticsearch, uncomment the corresponding relationship in .platform.app.yaml
+# and see documentation on how to define ES service: https://docs.upsun.com/add-services/elasticsearch.html
 
 # Due to logic in Ibexa\Bundle\Core\DependencyInjection\IbexaCoreExtension, do not change the service name to something different from 'varnish'
 varnish:
