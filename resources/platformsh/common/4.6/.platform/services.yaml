@@ -71,7 +71,7 @@ rediscache:
 #            collection1:
 #                core: collection1
 
-# If you wish to use elasticsearch, uncomment the corresponding relationship in .platform.app.yaml
+# If you wish to use Elasticsearch, uncomment the corresponding relationship in .platform.app.yaml
 # and see documentation on how to define ES service: https://docs.upsun.com/add-services/elasticsearch.html
 
 # Due to logic in app/config/env/platformsh.php, do not change the service name to something different than 'varnish'
