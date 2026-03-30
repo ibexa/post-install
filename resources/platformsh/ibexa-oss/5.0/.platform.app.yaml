@@ -163,7 +163,7 @@ hooks:
         
         NODE_VERSION=v22.16.0 symfony-build
         
-        if ! grep -q '"name": "ibexa/cloud"' composer.lock 2>/dev/null; then
+        if ! composer show -q ibexa/cloud 2>/dev/null; then
             echo ""
             echo "ERROR: The package 'ibexa/cloud' is mandatory for Ibexa Cloud deployments."
             echo "Please install it according to the documentation:"
