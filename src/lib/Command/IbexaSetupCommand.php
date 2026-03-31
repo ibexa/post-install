@@ -27,7 +27,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
- * @deprecated This command is deprecated and will be removed in 6.0.0 release. Rely on ibexa/cloud instead.
+ * @deprecated 5.0.7 This command is deprecated and will be removed in 6.0.0 release. Rely on ibexa/cloud instead.
  */
 #[AsCommand(name: 'ibexa:setup', description: 'Runs post install configuration tool.')]
 class IbexaSetupCommand extends BaseCommand
