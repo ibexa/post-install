@@ -51,6 +51,12 @@ class IbexaSetupCommand extends BaseCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        trigger_deprecation(
+            'ibexa/post-install',
+            '5.0.7',
+            'This command is deprecated and will be removed in 6.0.0 release. Rely on ibexa/cloud instead.'
+        );
+
         if ($input->getOption('platformsh')) {
             $this->getIO()->write('Installing Platform.sh config files...', true, IOInterface::NORMAL);
 
