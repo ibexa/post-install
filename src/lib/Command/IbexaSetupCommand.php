@@ -26,12 +26,15 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
+/**
+ * @deprecated 5.0.7 This command is deprecated and will be removed in 6.0.0 release. Rely on ibexa/cloud instead.
+ */
 #[AsCommand(name: 'ibexa:setup', description: 'Runs post install configuration tool.')]
 class IbexaSetupCommand extends BaseCommand
 {
     private VersionParser $versionParser;
 
-    private const PSH_RESOURCES_PATH = __DIR__ . '/../../../resources/platformsh';
+    private const string PSH_RESOURCES_PATH = __DIR__ . '/../../../resources/platformsh';
 
     protected function configure(): void
     {
@@ -48,6 +51,12 @@ class IbexaSetupCommand extends BaseCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        trigger_deprecation(
+            'ibexa/post-install',
+            '5.0.7',
+            'This command is deprecated and will be removed in 6.0.0 release. Rely on ibexa/cloud instead.'
+        );
+
         if ($input->getOption('platformsh')) {
             $this->getIO()->write('Installing Platform.sh config files...', true, IOInterface::NORMAL);
 

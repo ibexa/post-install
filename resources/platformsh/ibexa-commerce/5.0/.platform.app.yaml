@@ -161,10 +161,19 @@ hooks:
             echo "TIP: If you need to authenticate against Github/Gitlab/updates.ibexa.co, use COMPOSER_AUTH env variable"
             echo "See: https://docs.platform.sh/guides/general/composer-auth.html#set-the-envcomposer_auth-project-variable"
         fi
-        
+
         curl -fs https://get.symfony.com/cloud/configurator | bash
         
         NODE_VERSION=v22.16.0 symfony-build
+
+        if ! composer show -q ibexa/cloud 2>/dev/null; then
+            echo ""
+            echo "ERROR: The package 'ibexa/cloud' is mandatory for Ibexa Cloud deployments."
+            echo "Please install it according to the documentation:"
+            echo "https://doc.ibexa.co/en/5.0/ibexa_cloud/install_on_ibexa_cloud/#1-prepare-configuration-files"
+            echo ""
+            exit 1
+        fi
 
     # Deploy hook, access to services & done once (per cluster, not per node), only mounts are writable at this point
     # Note: Http traffic is paused while this is running, so for prod code this should finish as fast as possible, < 30s
