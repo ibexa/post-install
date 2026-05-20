@@ -62,6 +62,8 @@ sub vcl_recv {
         set req.http.cookie = regsuball(req.http.cookie, "; +", ";");
         set req.http.cookie = regsuball(req.http.cookie, ";(IBX_SESSION_ID[^=]*)=", "; \1=");
         set req.http.cookie = regsuball(req.http.cookie, ";(ibexa[-_][^=]*)=", "; \1=");
+        // Keep the Raptor anonymous visitor identifier cookie so CDP segmentation can resolve visitor segments.
+        set req.http.cookie = regsuball(req.http.cookie, ";(rsa)=", "; \1=");
         set req.http.cookie = regsuball(req.http.cookie, ";[^ ][^;]*", "");
         set req.http.cookie = regsuball(req.http.cookie, "^[; ]+|[; ]+$", "");
 
