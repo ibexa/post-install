@@ -83,3 +83,14 @@ varnish:
         vcl: !include
             type: string
             path: varnish.vcl
+
+# To use Varnish 9 instead of the default Varnish 6, comment out the "varnish" block above
+# and uncomment this one (note: service name must stay 'varnish', see comment above):
+#varnish:
+#    type: 'varnish:9.0'
+#    relationships:
+#        app: "app:http"
+#    configuration:
+#        vcl: !include
+#            type: string
+#            path: varnish9.vcl
