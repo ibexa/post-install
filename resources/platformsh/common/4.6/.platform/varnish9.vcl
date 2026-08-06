@@ -1,7 +1,6 @@
 // Varnish VCL for Platform.sh with:
 // - Varnish 9.0 or higher
 //   - Varnish xkey vmod (via varnish-modules package 0.28.0 or higher, or via Varnish Plus)
-// - eZ Platform 3.x or higher with ezplatform-http-cache (this) bundle
 //
 
 // Not applicable on Platform.sh:
