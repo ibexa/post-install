@@ -70,6 +70,13 @@ sub vcl_recv {
         }
     }
 
+    // Logged-in users must not be served stale content while the backend is healthy: drop their
+    // grace allowance so an expired object is refetched rather than delivered from the grace
+    // window. varnish5/6.vcl do this in vcl_hit with return (miss), which later versions do not support.
+    if (req.http.cookie && std.healthy(req.backend_hint)) {
+        set req.grace = 0s;
+    }
+
     // Do a standard lookup on assets (these don't vary by user context hash)
     // Note that file extension list below is not extensive, so consider completing it to fit your needs.
     if (req.url ~ "\.(css|js|gif|jpe?g|bmp|png|tiff?|ico|img|tga|wmf|svg|swf|ico|mp3|mp4|m4a|ogg|mov|avi|wmv|zip|gz|pdf|ttf|eot|wof)$") {
@@ -101,7 +108,7 @@ sub vcl_backend_response {
         set beresp.do_esi = true;
     }
 
-    // Make Varnish keep all objects for up to 1 hour beyond their TTL, see vcl_hit for Request logic on this
+    // Make Varnish keep all objects for up to 1 hour beyond their TTL, see vcl_recv for Request logic on this
     // This will make Varnish to refresh objects in cache after 1 hour
     // The total time object can be in cache is 70 minutes (grace + keep time)
     set beresp.grace = 1h;
