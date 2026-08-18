@@ -3,13 +3,16 @@
 //   - Varnish xkey vmod (via varnish-modules package 0.10.2 or higher, or via Varnish Plus)
 // - eZ Platform 3.x or higher with ezplatform-http-cache (this) bundle
 //
+// Differences here vs .vcl provided in ibexa/http-cache:
+// - include not supported, and imports are different
+// - Logic for filtering reverse proxy headers is different
 
 // Not applicable on Platform.sh:
 //vcl 4.0;
 //import std;
 import xkey;
 
-// Includes not available on Platform.sh, so inlining parameters.vlc:
+// Includes not available on Platform.sh, so inlining parameters.vcl:
 acl invalidators {
     "127.0.0.1";
     "192.168.0.0"/16;
@@ -31,6 +34,27 @@ sub vcl_recv {
 
     // Add a Surrogate-Capability header to announce ESI support.
     set req.http.Surrogate-Capability = "abc=ESI/1.0";
+
+    // Stop clients from injecting reverse proxy headers, as the application trusts them once
+    // framework.trusted_proxies is configured.
+    //
+    // The Ibexa Cloud router is authoritative for X-Forwarded-Proto, X-Client-IP and Client-Cdn,
+    // and discards the values a client sends for them, so those are kept as is.
+    // See https://fixed.docs.upsun.com/development/headers.html
+    //
+    // The headers below are not filtered by the router, so strip them here:
+    unset req.http.Forwarded;
+    unset req.http.X-Forwarded-Host;
+    unset req.http.X-Forwarded-Prefix;
+
+    // X-Forwarded-For is only appended to by the router, so any leading entry is what the client
+    // sent. X-Client-IP is always set by the router, and holds the end-user IP also when the
+    // request came in via a CDN, so use that as the only value.
+    if (req.http.X-Client-IP) {
+        set req.http.X-Forwarded-For = req.http.X-Client-IP;
+    } else {
+        unset req.http.X-Forwarded-For;
+    }
 
     // Ensure that the Symfony Router generates URLs correctly with Varnish
     if (req.http.X-Forwarded-Proto == "https" ) {
