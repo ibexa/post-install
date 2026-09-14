@@ -1,0 +1,36 @@
+varnishtest "Behind a supported CDN, the router supplied end client IP and Client-Cdn are kept"
+
+# When the request arrives via a CDN the router replaces X-Forwarded-For with the end client IP and
+# sets Client-Cdn, discarding whatever the client sent for either. Ibexa DXP uses Client-Cdn to
+# detect Fastly, so it has to reach the application.
+# See https://fixed.docs.upsun.com/development/headers.html
+
+server s1 -listen "127.0.0.1:9081" {
+    rxreq
+
+    expect req.http.X-Forwarded-For == "198.51.100.7"
+    expect req.http.X-Client-IP     == "198.51.100.7"
+    expect req.http.Client-Cdn      == "fastly"
+
+    expect req.http.X-Forwarded-Host   == <undef>
+    expect req.http.X-Forwarded-Prefix == <undef>
+    expect req.http.Forwarded          == <undef>
+
+    expect req.http.X-Forwarded-Proto == "https"
+    expect req.http.X-Forwarded-Port  == "443"
+
+    txresp
+} -start
+
+varnish v1 -arg "-f /etc/varnish/default.vcl" -start
+
+client c1 {
+    txreq -url "/via-cdn" \
+        -hdr "X-Forwarded-For: 198.51.100.7" \
+        -hdr "X-Client-IP: 198.51.100.7" \
+        -hdr "Client-Cdn: fastly" \
+        -hdr "X-Forwarded-Proto: https" \
+        -hdr "X-Forwarded-Host: evil.example"
+    rxresp
+    expect resp.status == 200
+} -run

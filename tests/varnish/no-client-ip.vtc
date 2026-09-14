@@ -1,0 +1,29 @@
+varnishtest "Without X-Client-IP there is nothing trustworthy, so X-Forwarded-For is dropped"
+
+# X-Client-IP is always set by the Ibexa Cloud router. If it is absent the request did not come
+# through the router, so the client supplied X-Forwarded-For must not be handed to the application.
+
+server s1 -listen "127.0.0.1:9081" {
+    rxreq
+
+    expect req.http.X-Forwarded-For == <undef>
+    expect req.http.X-Client-IP     == <undef>
+
+    expect req.http.X-Forwarded-Host   == <undef>
+    expect req.http.X-Forwarded-Prefix == <undef>
+    expect req.http.Forwarded          == <undef>
+
+    txresp
+} -start
+
+varnish v1 -arg "-f /etc/varnish/default.vcl" -start
+
+client c1 {
+    txreq -url "/no-client-ip" \
+        -hdr "X-Forwarded-For: 6.6.6.6" \
+        -hdr "X-Forwarded-Host: evil.example" \
+        -hdr "X-Forwarded-Prefix: /admin" \
+        -hdr "Forwarded: for=6.6.6.6;host=evil.example"
+    rxresp
+    expect resp.status == 200
+} -run
