@@ -1,6 +1,7 @@
 includes:
     - vendor/phpstan/phpstan-phpunit/extension.neon
     - vendor/phpstan/phpstan-webmozart-assert/extension.neon
+    - vendor/ibexa/phpstan/extension.neon
     - phpstan-baseline.neon
 
 parameters:
