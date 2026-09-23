@@ -2,8 +2,6 @@
     "name": "ibexa/post-install",
     "description": "Post Installation Tool for Ibexa products",
     "license": "(GPL-2.0-only or proprietary)",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "type": "composer-plugin",
     "authors": [
         {
@@ -19,6 +17,8 @@
     "require-dev": {
         "composer/composer": "^2.0.8",
         "ibexa/code-style": "~2.0.0",
+        "ibexa/core": "~6.0.x-dev",
+        "ibexa/doctrine-schema": "~6.0.x-dev",
         "ibexa/phpstan": "~6.0.x-dev",
         "ibexa/rector": "~6.0.x-dev",
         "phpstan/phpstan": "^2.0",
