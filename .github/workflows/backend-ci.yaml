@@ -31,6 +31,8 @@ jobs:
         run: |
           set -euo pipefail
           composer run-script check-cs -- --format=checkstyle | cs2pr
+        env:
+          PHP_CS_FIXER_IGNORE_ENV: 1
 
   tests:
     name: Tests
