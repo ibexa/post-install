@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "php": ">=8.3",
+        "php": ">=8.5",
         "composer-plugin-api": "^2.0",
         "composer/semver": "^3.2"
     },

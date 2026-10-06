@@ -9,7 +9,7 @@ jobs:
         name: Run rector
         uses: ibexa/gh-workflows/.github/workflows/rector.yml@main
         with:
-            php-version: '8.3'
+            php-version: '8.5'
         secrets:
             AUTOMATION_CLIENT_ID: ${{ secrets.AUTOMATION_CLIENT_ID }}
             AUTOMATION_CLIENT_SECRET: ${{ secrets.AUTOMATION_CLIENT_SECRET }}
