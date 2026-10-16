@@ -1,0 +1,38 @@
+varnishtest "Without a CDN, X-Forwarded-For is rebuilt from the router supplied X-Client-IP"
+
+# The Ibexa Cloud router only *appends* the real client IP to whatever the client sent in
+# X-Forwarded-For, so every leading entry is client controlled and must not survive.
+# See https://fixed.docs.upsun.com/development/headers.html
+
+server s1 -listen "127.0.0.1:9081" {
+    rxreq
+
+    # Client supplied prefix dropped: only the router's own value is left.
+    expect req.http.X-Forwarded-For == "203.0.113.9"
+
+    # Not filtered by the router, so the VCL strips them.
+    expect req.http.X-Forwarded-Host   == <undef>
+    expect req.http.X-Forwarded-Prefix == <undef>
+    expect req.http.Forwarded          == <undef>
+
+    # Router authoritative, kept as is.
+    expect req.http.X-Client-IP       == "203.0.113.9"
+    expect req.http.X-Forwarded-Proto == "https"
+    expect req.http.X-Forwarded-Port  == "443"
+
+    txresp
+} -start
+
+varnish v1 -arg "-f /etc/varnish/default.vcl" -start
+
+client c1 {
+    txreq -url "/no-cdn" \
+        -hdr "X-Forwarded-For: 6.6.6.6, 203.0.113.9" \
+        -hdr "X-Client-IP: 203.0.113.9" \
+        -hdr "X-Forwarded-Proto: https" \
+        -hdr "X-Forwarded-Host: evil.example" \
+        -hdr "X-Forwarded-Prefix: /admin" \
+        -hdr "Forwarded: for=6.6.6.6;host=evil.example;proto=https"
+    rxresp
+    expect resp.status == 200
+} -run

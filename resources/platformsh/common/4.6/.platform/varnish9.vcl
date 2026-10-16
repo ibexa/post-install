@@ -31,6 +31,27 @@ sub vcl_recv {
     // Add a Surrogate-Capability header to announce ESI support.
     set req.http.Surrogate-Capability = "abc=ESI/1.0";
 
+    // Stop clients from injecting reverse proxy headers, as the application trusts them once
+    // framework.trusted_proxies is configured.
+    //
+    // The Ibexa Cloud router is authoritative for X-Forwarded-Proto, X-Client-IP and Client-Cdn,
+    // and discards the values a client sends for them, so those are kept as is.
+    // See https://fixed.docs.upsun.com/development/headers.html
+    //
+    // The headers below are not filtered by the router, so strip them here:
+    unset req.http.Forwarded;
+    unset req.http.X-Forwarded-Host;
+    unset req.http.X-Forwarded-Prefix;
+
+    // X-Forwarded-For is only appended to by the router, so any leading entry is what the client
+    // sent. X-Client-IP is always set by the router, and holds the end-user IP also when the
+    // request came in via a CDN, so use that as the only value.
+    if (req.http.X-Client-IP) {
+        set req.http.X-Forwarded-For = req.http.X-Client-IP;
+    } else {
+        unset req.http.X-Forwarded-For;
+    }
+
     // Ensure that the Symfony Router generates URLs correctly with Varnish
     if (req.http.X-Forwarded-Proto == "https" ) {
         set req.http.X-Forwarded-Port = "443";
