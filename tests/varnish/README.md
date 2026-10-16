@@ -1,8 +1,8 @@
 Varnish VCL tests
 =================
 
-`varnishtest` cases for `resources/platformsh/common/4.6/.platform/varnish.vcl`, the VCL shipped to
-Platform.sh / Ibexa Cloud installations.
+`varnishtest` cases for `resources/platformsh/common/4.6/.platform/varnish.vcl` and `varnish9.vcl`,
+the VCLs shipped to Platform.sh / Ibexa Cloud installations.
 
 They load the real VCL file into a real Varnish and assert on the request the **backend** receives,
 which is where the reverse proxy header filtering in `vcl_recv` can be observed.
@@ -25,14 +25,17 @@ Running them
 ```bash
 docker build -t ibexa-varnishtest:6.0 tests/varnish
 IMAGE=ibexa-varnishtest:6.0 tests/varnish/run.sh
+
+docker build -t ibexa-varnishtest:9 -f tests/varnish/Dockerfile-9 tests/varnish
+IMAGE=ibexa-varnishtest:9 VCL=resources/platformsh/common/4.6/.platform/varnish9.vcl tests/varnish/run.sh
 ```
 
 Notes
 -----
 
-- The image has to be **Varnish 6.0LTS specifically**. This VCL returns `miss` from `vcl_hit`, which
-  6.5 and later reject, and the xkey vmod it imports is not packaged for 6.0LTS — hence the source
-  build in `Dockerfile`, mirroring `doc/docker/Dockerfile-varnish` in `ibexa/docker`.
+- The `varnish.vcl` image has to be **Varnish 6.0LTS specifically**. This VCL returns `miss` from
+  `vcl_hit`, which 6.5 and later reject, and the xkey vmod it imports is not packaged for 6.0LTS —
+  hence the source build in `Dockerfile`, mirroring `doc/docker/Dockerfile-varnish` in `ibexa/docker`.
 - The VCL cannot be loaded as it stands: Platform.sh supplies the VCL version declaration, the `std`
   import and the `app.backend()` director. `run.sh` prepends the first two and swaps the director for
   a stub, so the shipped file itself is what gets tested.
