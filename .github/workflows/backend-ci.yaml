@@ -73,7 +73,7 @@ jobs:
     timeout-minutes: 20
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       # Builds varnish-modules from source, as the xkey vmod is not packaged for Varnish 6.0LTS.
       - name: Build varnishtest image
