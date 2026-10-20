@@ -18,6 +18,7 @@
         "composer/composer": "^2.0.8",
         "ibexa/code-style": "~2.3.1",
         "ibexa/core": "~6.0.x-dev",
+        "ibexa/doctrine-migrations": "~6.0.x-dev",
         "ibexa/doctrine-schema": "~6.0.x-dev",
         "ibexa/phpstan": "~6.0.x-dev",
         "ibexa/rector": "~6.0.x-dev",
