@@ -17,18 +17,24 @@ use Ibexa\PostInstall\CommandProvider as SetupToolCommandProvider;
 
 class PostInstall implements PluginInterface, Capable
 {
-    public function activate(Composer $composer, IOInterface $io): void
-    {
+    public function activate(
+        Composer $composer,
+        IOInterface $io
+    ): void {
         $io->write('[Ibexa PostInstall tool] Activate', true, IOInterface::DEBUG);
     }
 
-    public function deactivate(Composer $composer, IOInterface $io): void
-    {
+    public function deactivate(
+        Composer $composer,
+        IOInterface $io
+    ): void {
         $io->write('[Ibexa PostInstall tool] Deactivate', true, IOInterface::DEBUG);
     }
 
-    public function uninstall(Composer $composer, IOInterface $io): void
-    {
+    public function uninstall(
+        Composer $composer,
+        IOInterface $io
+    ): void {
         $io->write('[Ibexa PostInstall tool] Uninstall', true, IOInterface::DEBUG);
     }
 
