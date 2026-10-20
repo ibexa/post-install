@@ -47,10 +47,12 @@ class IbexaSetupCommand extends BaseCommand
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
+    protected function execute(
+        InputInterface $input,
+        OutputInterface $output
+    ): int {
         trigger_deprecation(
             'ibexa/post-install',
             '5.0.7',
@@ -124,7 +126,7 @@ class IbexaSetupCommand extends BaseCommand
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     protected function getCommonFiles(string $product): Finder
     {
@@ -141,10 +143,12 @@ class IbexaSetupCommand extends BaseCommand
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    protected function getProductSpecificFiles(string $product, string $version): Finder
-    {
+    protected function getProductSpecificFiles(
+        string $product,
+        string $version
+    ): Finder {
         $productDir = str_replace('/', '-', $product);
         $versionDir = $this->getVersionDirectory($product, self::PSH_RESOURCES_PATH . '/' . $productDir);
 
@@ -163,8 +167,10 @@ class IbexaSetupCommand extends BaseCommand
         $output->writeln('');
     }
 
-    private function getVersionDirectory(string $product, string $path): string
-    {
+    private function getVersionDirectory(
+        string $product,
+        string $path
+    ): string {
         $finder = new Finder();
         $finder
             ->in($path)
