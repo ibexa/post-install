@@ -10,12 +10,9 @@ namespace Ibexa\PostInstall;
 
 use Composer\Composer;
 use Composer\IO\IOInterface;
-use Composer\Plugin\Capability\CommandProvider;
-use Composer\Plugin\Capable;
 use Composer\Plugin\PluginInterface;
-use Ibexa\PostInstall\CommandProvider as SetupToolCommandProvider;
 
-class PostInstall implements PluginInterface, Capable
+class PostInstall implements PluginInterface
 {
     public function activate(
         Composer $composer,
@@ -36,12 +33,5 @@ class PostInstall implements PluginInterface, Capable
         IOInterface $io
     ): void {
         $io->write('[Ibexa PostInstall tool] Uninstall', true, IOInterface::DEBUG);
-    }
-
-    public function getCapabilities(): array
-    {
-        return [
-            CommandProvider::class => SetupToolCommandProvider::class,
-        ];
     }
 }
