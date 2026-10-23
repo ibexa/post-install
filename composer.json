@@ -11,8 +11,7 @@
     ],
     "require": {
         "php": ">=8.5",
-        "composer-plugin-api": "^2.0",
-        "composer/semver": "^3.2"
+        "composer-plugin-api": "^2.0"
     },
     "require-dev": {
         "composer/composer": "^2.0.8",
@@ -25,10 +24,7 @@
         "phpstan/phpstan": "^2.0",
         "phpstan/phpstan-phpunit": "^2.0",
         "phpstan/phpstan-webmozart-assert": "^2.0",
-        "symfony/console": "^8.1",
         "symfony/dotenv": "^8.1",
-        "symfony/filesystem": "^8.1",
-        "symfony/finder": "^8.1",
         "symfony/phpunit-bridge": "^8.1",
         "symfony/process": "^8.1"
     },
