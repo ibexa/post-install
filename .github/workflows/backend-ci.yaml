@@ -61,3 +61,30 @@ jobs:
 
       - name: Run PHPStan analysis
         run: composer run-script phpstan
+
+  varnish-vcl-tests:
+    name: Varnish VCL tests
+    runs-on: "ubuntu-26.04"
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v7
+
+      # Builds varnish-modules from source, as the xkey vmod is not packaged for Varnish 6.0LTS.
+      - name: Build varnishtest image
+        run: docker build -t ibexa-varnishtest:6.0 tests/varnish
+
+      - name: Run varnishtest suite
+        env:
+          IMAGE: ibexa-varnishtest:6.0
+          VCL: resources/platformsh/common/4.6/.platform/varnish.vcl
+        run: tests/varnish/run.sh
+
+      - name: Build Varnish 9 varnishtest image
+        run: docker build -t ibexa-varnishtest:9 -f tests/varnish/Dockerfile-9 tests/varnish
+
+      - name: Run varnishtest suite against varnish9.vcl
+        env:
+          IMAGE: ibexa-varnishtest:9
+          VCL: resources/platformsh/common/4.6/.platform/varnish9.vcl
+        run: tests/varnish/run.sh

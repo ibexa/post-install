@@ -1,0 +1,21 @@
+# Image for running the varnishtest suite in tests/varnish/ against varnish9.vcl.
+#
+# Mirrors docker/Dockerfile-varnish9 from ibexa/docker: the VCL imports the xkey vmod, which the
+# official image does not ship.
+
+FROM varnish:9.0
+
+SHELL ["/bin/bash", "-c"]
+
+# Root is only needed to install the vmod; the image drops back to the unprivileged user the base
+# image runs as by default.
+USER root
+RUN set -e && \
+    read -ra vmod_deps <<< "$VMOD_DEPS" && \
+    varnish_version=$(dpkg-query -W -f='${Version}' varnish) && \
+    apt-get update && \
+    apt-get -y --no-install-recommends install "${vmod_deps[@]/varnish-dev/varnish-dev=$varnish_version}" && \
+    install-vmod https://github.com/varnish/varnish-modules/releases/download/0.28.0/varnish-modules-0.28.0.tar.gz && \
+    rm -rf /var/lib/apt/lists/*
+
+USER varnish
