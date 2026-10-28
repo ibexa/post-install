@@ -77,6 +77,7 @@ jobs:
       - name: Run varnishtest suite
         env:
           IMAGE: ibexa-varnishtest:6.0
+          VCL: resources/platformsh/common/4.6/.platform/varnish.vcl
         run: tests/varnish/run.sh
 
       - name: Build Varnish 9 varnishtest image
