@@ -164,7 +164,7 @@ hooks:
 
         curl -fs https://get.symfony.com/cloud/configurator | bash
         
-        NODE_VERSION=v22.16.0 symfony-build
+        NODE_VERSION=v24.22.1 symfony-build
 
         if ! composer show -q ibexa/cloud 2>/dev/null; then
             echo ""
