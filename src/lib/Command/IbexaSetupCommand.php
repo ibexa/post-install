@@ -9,6 +9,8 @@ declare(strict_types=1);
 namespace Ibexa\PostInstall\Command;
 
 use Composer\Command\BaseCommand;
+use Composer\InstalledVersions;
+use Composer\Util\ProcessExecutor;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,13 +23,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'ibexa:setup', description: 'Runs post install configuration tool.')]
 class IbexaSetupCommand extends BaseCommand
 {
+    private const string CLOUD_SETUP_COMMAND = 'bin/console ibexa:cloud:setup --upsun';
+
     protected function configure(): void
     {
         $this->addOption(
             'platformsh',
             null,
             InputOption::VALUE_NONE,
-            'Install Platform.sh config files (no longer supported, use ibexa/cloud instead)'
+            'Install Platform.sh config files (delegates to "ibexa:cloud:setup --upsun" from ibexa/cloud)'
         );
     }
 
@@ -41,16 +45,26 @@ class IbexaSetupCommand extends BaseCommand
             'This command is deprecated and will be removed in 6.0.0 release. Rely on ibexa/cloud instead.'
         );
 
-        if ($input->getOption('platformsh')) {
-            $this->getIO()->writeError([
+        if (!$input->getOption('platformsh')) {
+            return Command::SUCCESS;
+        }
+
+        $io = $this->getIO();
+
+        if (!InstalledVersions::isInstalled('ibexa/cloud')) {
+            $io->writeError([
                 '<error>Platform.sh config files are no longer shipped with ibexa/post-install.</error>',
-                'Install the ibexa/cloud package and run "php bin/console ibexa:cloud:setup --upsun" instead.',
+                'Install the ibexa/cloud package and run "php ' . self::CLOUD_SETUP_COMMAND . '" instead.',
                 'See https://doc.ibexa.co/en/5.0/ibexa_cloud/install_on_ibexa_cloud/#1-prepare-configuration-files',
             ]);
 
             return Command::FAILURE;
         }
 
-        return Command::SUCCESS;
+        $io->write('Delegating to "php ' . self::CLOUD_SETUP_COMMAND . '" from ibexa/cloud...');
+
+        return (new ProcessExecutor($io))->execute(
+            ProcessExecutor::escape(PHP_BINARY) . ' ' . self::CLOUD_SETUP_COMMAND
+        );
     }
 }
