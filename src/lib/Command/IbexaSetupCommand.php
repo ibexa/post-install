@@ -31,7 +31,7 @@ class IbexaSetupCommand extends BaseCommand
             'platformsh',
             null,
             InputOption::VALUE_NONE,
-            'Install Platform.sh config files (delegates to "ibexa:cloud:setup --upsun" from ibexa/cloud)'
+            'Install Upsun config files (delegates to "ibexa:cloud:setup --upsun" from ibexa/cloud)'
         );
     }
 
@@ -53,7 +53,7 @@ class IbexaSetupCommand extends BaseCommand
 
         if (!InstalledVersions::isInstalled('ibexa/cloud')) {
             $io->writeError([
-                '<error>Platform.sh config files are no longer shipped with ibexa/post-install.</error>',
+                '<error>Upsun config files are no longer shipped with ibexa/post-install.</error>',
                 'Install the ibexa/cloud package and run "php ' . self::CLOUD_SETUP_COMMAND . '" instead.',
                 'See https://doc.ibexa.co/en/5.0/ibexa_cloud/install_on_ibexa_cloud/#1-prepare-configuration-files',
             ]);
